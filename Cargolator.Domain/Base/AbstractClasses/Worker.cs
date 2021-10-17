@@ -33,5 +33,20 @@ namespace Cargolator.Domain.Base.AbstractClasses
             }
             return false;
         }
+
+        public void TakeFromStock(IStock stock)
+        {
+            TakedCargo = stock.CargosStock.Dequeue();
+        }
+
+        public bool TryTakeFromStock(IStock stock)
+        {
+            if (TakedCargo is null)
+            {
+                TakeFromStock(stock);
+                return true;
+            }
+            return false;
+        }
     }
 }

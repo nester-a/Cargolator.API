@@ -23,7 +23,8 @@ namespace Cargolator.Console
         public void StartWork()
         {
             stock.AddOnStock(cargo1, cargo3, cargo4, cargo2);
-            loader.
+
+
         }
     }
 }
