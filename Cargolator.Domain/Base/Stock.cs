@@ -10,5 +10,13 @@ namespace Cargolator.Domain.Base
     public class Stock : IStock
     {
         public Queue<ICargo> CargosStock { get; set; } = new Queue<ICargo>();
+
+        public void AddOnStock(params ICargo[] cargos)
+        {
+            for (int i = 0; i < cargos.Length; i++)
+            {
+                CargosStock.Enqueue(cargos[i]);
+            }
+        }
     }
 }

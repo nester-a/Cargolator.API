@@ -9,5 +9,6 @@ namespace Cargolator.Domain.Base.Interfaces
     public interface IStock
     {
         Queue<ICargo> CargosStock { get; set; }
+        void AddOnStock(params ICargo[] cargos);
     }
 }
