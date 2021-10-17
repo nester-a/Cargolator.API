@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Cargolator.Domain.Base.Interfaces
 {
-    public interface ILoader : ITakeCargo
+    public interface IUnloader : ITakeCargo
     {
-        void Load(ILoadable container);
-        bool TryLoad(ILoadable container);
-        void Rotate();
+        void Unload(ILoadable container);
+        bool TryUnload(ILoadable container);
+        void PlaceOnStock(IStock stock);
     }
 }

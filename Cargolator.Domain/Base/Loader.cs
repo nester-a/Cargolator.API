@@ -1,4 +1,5 @@
-﻿using Cargolator.Domain.Base.Interfaces;
+﻿using Cargolator.Domain.Base.AbstractClasses;
+using Cargolator.Domain.Base.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,31 +8,19 @@ using System.Threading.Tasks;
 
 namespace Cargolator.Domain.Base
 {
-    public class Loader : ILoader
+    public class Loader : Worker, ILoader
     {
-        public ICargo TakedCargo { get; private set; }
-
         public void Load(ILoadable container)
         {
             container.LoadedCargo.Push(TakedCargo);
             TakedCargo = null;
         }
 
-        public bool TryLoad(ILoadable container, ICoordinates placeForLoad)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Take(ICargo cargo)
-        {
-            TakedCargo = cargo;
-        }
-
-        public bool TryTake(ICargo cargo)
+        public bool TryLoad(ILoadable container)
         {
             if (TakedCargo is null)
             {
-                Take(cargo);
+                Load(container);
                 return true;
             }
             return false;

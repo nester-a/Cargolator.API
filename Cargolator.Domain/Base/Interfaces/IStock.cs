@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Cargolator.Domain.Base.Interfaces
 {
-    public interface ILoader : ITakeCargo
+    public interface IStock
     {
-        void Load(ILoadable container);
-        bool TryLoad(ILoadable container);
-        void Rotate();
+        Queue<ICargo> CargosStock { get; set; }
     }
 }
