@@ -11,7 +11,7 @@ namespace Cargolator.Console
     public class WorkModel
     {
         Stock stock = new Stock();
-        static Container container = new Container { Length = 40, Width = 10 };
+        static Container container = new Container { Length = 10, Width = 5 };
         Loader loader = new Loader();
         Unloader unloader = new Unloader();
         Supervisor supervisor = new Supervisor(container);
@@ -23,8 +23,8 @@ namespace Cargolator.Console
         public void StartWork()
         {
             stock.AddOnStock(cargo1, cargo3, cargo4, cargo2);
-
-
+            loader.TryTakeFromStock(stock);
+            Coordinates lc = supervisor.FindLoadPlace(loader.TakedCargo);
         }
     }
 }

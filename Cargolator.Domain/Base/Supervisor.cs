@@ -26,7 +26,7 @@ namespace Cargolator.Domain.Base
                 {
                     for (int j = 0; j < ContainerMap.GetLength(1); j++)
                     {
-                        if(ContainerMap[i,j] == string.Empty)
+                        if(ContainerMap[i,j] is null)
                         {
                             if(j + cargoForLoad.Width < ContainerMap.GetLength(1))
                             {
@@ -35,6 +35,7 @@ namespace Cargolator.Domain.Base
                                     startPoint = new Point { X = i, Y = j };
                                     cells++;
                                     i = startPoint.X - 1;
+                                    break;
                                 }
                                 else
                                     return null;
@@ -46,8 +47,9 @@ namespace Cargolator.Domain.Base
                 {
                     for (int j = startPoint.Y + 1; j < ContainerMap.GetLength(1); j++)
                     {
-                        if (ContainerMap[i, j] == string.Empty)
+                        if (ContainerMap[i, j] is null)
                         {
+                            //TODO form here
                             cells++;
                             if(cells == cellsTarget)
                             {
