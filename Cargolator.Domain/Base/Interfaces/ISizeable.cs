@@ -8,7 +8,7 @@ namespace Cargolator.Domain.Base.Interfaces
 {
     public interface ISizeable
     {
-        int Length { get; }
-        int Width { get; }
+        int Length { get; set; }
+        int Width { get; set; }
     }
 }
