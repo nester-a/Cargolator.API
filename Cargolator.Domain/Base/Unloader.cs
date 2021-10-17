@@ -9,11 +9,6 @@ namespace Cargolator.Domain.Base.Interfaces
 {
     public class Unloader : Worker, IUnloader
     {
-        public void PlaceOnStock(IStock stock)
-        {
-            stock.CargosStock.Enqueue(TakedCargo);
-            TakedCargo = null;
-        }
         public bool TryUnload(ILoadable container)
         {
             if(TakedCargo is null)

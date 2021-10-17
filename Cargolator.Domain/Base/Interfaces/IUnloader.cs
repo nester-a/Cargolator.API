@@ -10,6 +10,5 @@ namespace Cargolator.Domain.Base.Interfaces
     {
         void Unload(ILoadable container);
         bool TryUnload(ILoadable container);
-        void PlaceOnStock(IStock stock);
     }
 }
