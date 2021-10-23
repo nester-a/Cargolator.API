@@ -1,4 +1,5 @@
-﻿using Cargolator.Domain.Base.Interfaces;
+﻿using Cargolator.Domain.Base.AbstractClasses;
+using Cargolator.Domain.Base.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,14 +8,21 @@ using System.Threading.Tasks;
 
 namespace Cargolator.Domain.Base
 {
-    public class Coordinates : ICoordinates
+    public class Coordinates : Coordinates2D
     {
-        public IPoint UpperLeftCorner { get; set; }
-        public IPoint LowerRightCorner { get; set; }
-        public Coordinates(IPoint upperLeftCorner, IPoint lowerRightCorner)
+        public Coordinates(Point2D upperLeftCorner, Point2D lowerRightCorner)
         {
             UpperLeftCorner = upperLeftCorner;
             LowerRightCorner = lowerRightCorner;
+        }
+        public override bool Equals(object obj)
+        {
+            if (obj is Coordinates && obj is not null)
+            {
+                var coor = obj as Coordinates;
+                return UpperLeftCorner.Equals(coor.UpperLeftCorner) && LowerRightCorner.Equals(coor.LowerRightCorner);
+            }
+            return false;
         }
     }
 }

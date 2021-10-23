@@ -1,4 +1,5 @@
-﻿using Cargolator.Domain.Base.Interfaces;
+﻿using Cargolator.Domain.Base.AbstractClasses;
+using Cargolator.Domain.Base.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,16 @@ using System.Threading.Tasks;
 
 namespace Cargolator.Domain.Base
 {
-    public class Point : IPoint
+    public class Point : Point2D
     {
-        public int X { get; set; }
-        public int Y { get; set; }
+        public override bool Equals(object obj)
+        {
+            if (obj is Point && obj is not null)
+            {
+                var point = obj as Point;
+                return this.X.Equals(point.X) && this.Y.Equals(point.Y);
+            }
+            return false;
+        }
     }
 }
