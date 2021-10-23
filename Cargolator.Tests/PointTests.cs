@@ -14,7 +14,7 @@ namespace Cargolator.Tests
         public void PointEqualsResult()
         {
             // Arrange
-            Point a = new Point() { X=4, Y=5};
+            Point a = new Point() { X=5, Y=5};
             Point b = new Point() { X=5, Y=5};
 
             // Act
