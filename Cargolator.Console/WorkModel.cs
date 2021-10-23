@@ -15,7 +15,7 @@ namespace Cargolator.Console
         Loader loader = new Loader();
         Unloader unloader = new Unloader();
         Supervisor supervisor = new Supervisor(container);
-        Cargo cargo1 = new Cargo { Id = 1, Length = 5, Width = 2 };
+        Cargo cargo1 = new Cargo { Id = 1, Length = 4, Width = 2 };
         Cargo cargo2 = new Cargo { Id = 2, Length = 5, Width = 2 };
         Cargo cargo3 = new Cargo { Id = 3, Length = 5, Width = 2 };
         Cargo cargo4 = new Cargo { Id = 4, Length = 5, Width = 2 };

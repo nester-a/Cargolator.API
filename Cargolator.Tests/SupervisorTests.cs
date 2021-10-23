@@ -12,11 +12,11 @@ namespace Cargolator.Tests
             // Arrange
             Container cnt = new Container() { Length = 10, Width = 10 };
             Supervisor sv = new Supervisor(cnt);
-            Cargo crg = new Cargo() { Length = 5, Width = 2 };
+            Cargo crg = new Cargo() { Length = 4, Width = 2 };
 
             // Act
             Coordinates result = sv.FindLoadPlace(crg);
-            Coordinates expected = new Coordinates(new Point(0, 0), new Point(1, 4));
+            Coordinates expected = new Coordinates(new Point(0, 0), new Point(1, 3));
             var actual = result.Equals(expected);
 
             // Assert
