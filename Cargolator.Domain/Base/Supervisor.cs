@@ -1,4 +1,5 @@
-﻿using Cargolator.Domain.Base.Interfaces;
+﻿using Cargolator.Domain.Base.AbstractClasses;
+using Cargolator.Domain.Base.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
