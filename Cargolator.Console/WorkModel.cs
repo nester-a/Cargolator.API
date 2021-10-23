@@ -25,6 +25,25 @@ namespace Cargolator.Console
             stock.AddOnStock(cargo1, cargo3, cargo4, cargo2);
             loader.TryTakeFromStock(stock);
             Coordinates lc = supervisor.FindLoadPlace(loader.TakedCargo);
+            SomeHelp();
+            System.Console.ReadLine();
+            
+        }
+        private void SomeHelp()
+        {
+            for (int i = 0; i < supervisor.ContainerMap.GetLength(0); i++)
+            {
+                for (int j = 0; j < supervisor.ContainerMap.GetLength(1); j++)
+                {
+                    if(supervisor.ContainerMap[i,j] is null)
+                    {
+                        System.Console.Write("|_|");
+                    }
+                    else
+                        System.Console.Write($"|{supervisor.ContainerMap[i, j]}|");
+                }
+                System.Console.WriteLine();
+            }
         }
     }
 }

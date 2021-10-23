@@ -16,8 +16,11 @@ namespace Cargolator.Tests
 
             // Act
             Coordinates result = sv.FindLoadPlace(crg);
+            Coordinates expected = new Coordinates(new Point(0, 0), new Point(1, 4));
+            var actual = result.Equals(expected);
 
             // Assert
+            Assert.True(actual);
         }
     }
 }

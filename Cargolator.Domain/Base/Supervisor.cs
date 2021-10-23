@@ -18,6 +18,7 @@ namespace Cargolator.Domain.Base
         }
         public Coordinates FindLoadPlace(ICargo cargoForLoad)
         {
+            string[,] draft = CopyContainerMap();
             Point startPoint = null;
             int cells = 0;
             int cellsTarget = cargoForLoad.Length * cargoForLoad.Width;
@@ -35,6 +36,7 @@ namespace Cargolator.Domain.Base
                                 {
                                     startPoint = new Point { X = i, Y = j };
                                     cells++;
+                                    draft[i, j] = cargoForLoad.Id.ToString();
                                     i = startPoint.X - 1;
                                     break;
                                 }
@@ -46,27 +48,60 @@ namespace Cargolator.Domain.Base
                 }
                 else
                 {
-                    for (int j = startPoint.Y + 1; j < ContainerMap.GetLength(1); j++)
+                    for (int j = 0; j < ContainerMap.GetLength(1); j++)
                     {
-                        if (ContainerMap[i, j] is null)
-                        {
-                            //TODO form here
-                            cells++;
-                            if(cells == cellsTarget)
-                            {
-                                var finishPoint = new Point() { X = i, Y = j };
-                                return new Coordinates(startPoint, finishPoint);
-                            }
-                        }
+                        if (cells == 1 && j == 0) continue;
                         else
                         {
-                            cells = 0;
-                            startPoint = null;
+                            if (ContainerMap[i, j] is null)
+                            {
+                                cells++;
+                                draft[i, j] = cargoForLoad.Id.ToString();
+                                if (cells % cargoForLoad.Length == 0 && cells != cellsTarget) break;
+                                if (cells == cellsTarget)
+                                {
+                                    var finishPoint = new Point() { X = i, Y = j };
+                                    RenewContainerMap(draft);
+                                    return new Coordinates(startPoint, finishPoint);
+                                }
+                            }
+                            else
+                            {
+                                cells = 0;
+                                startPoint = null;
+                            }
                         }
+                        
                     }
                 }
             }
             return null;
+        }
+        private string[,] CopyContainerMap()
+        {
+            string[,] result = new string[ContainerMap.GetLength(0), ContainerMap.GetLength(1)];
+            for (int i = 0; i < ContainerMap.GetLength(0); i++)
+            {
+                for (int j = 0; j < ContainerMap.GetLength(1); j++)
+                {
+                    result[i, j] = ContainerMap[i, j];
+                }
+            }
+            return result;
+        }
+        private void RenewContainerMap(string[,] origin)
+        {
+            for (int i = 0; i < ContainerMap.GetLength(0); i++)
+            {
+                for (int j = 0; j < ContainerMap.GetLength(1); j++)
+                {
+                    if (origin[i, j] is not null && ContainerMap[i, j] != origin[i, j])
+                    {
+                        ContainerMap[i, j] = origin[i, j];
+                    }
+                    else continue;
+                }
+            }
         }
     }
 }

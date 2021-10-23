@@ -10,6 +10,12 @@ namespace Cargolator.Domain.Base
 {
     public class Point : Point2D
     {
+        public Point() { }
+        public Point(int x, int y)
+        {
+            X = x;
+            Y = y;
+        }
         public override bool Equals(object obj)
         {
             if (obj is Point && obj is not null)
