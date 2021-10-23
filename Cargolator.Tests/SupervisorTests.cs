@@ -18,7 +18,6 @@ namespace Cargolator.Tests
             Coordinates result = sv.FindLoadPlace(crg);
 
             // Assert
-            Assert.Equal<Coordinates>()
         }
     }
 }
