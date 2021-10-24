@@ -41,11 +41,11 @@ namespace Cargolator.Domain.Base
 
         public bool PlaceToStock(IStock stock)
         {
-            if (TakedCargo is not null)
+            if (TakedCargo is not null && stock is not null)
             {
                 stock.CargosStock.Enqueue(TakedCargo);
                 PlaceToStockCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} successfully place the cargo {TakedCargo.Id} to stock", true));
-                DropCargo();
+                TryDropCargo();
                 return true;
             }
             PlaceToStockCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} cannot place the cargo. He doesn't have it.", false));
