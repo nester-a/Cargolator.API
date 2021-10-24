@@ -13,8 +13,9 @@ namespace Cargolator.Domain.Base.AbstractClasses
     {
         public delegate void WorkerHandler(object sender, WorkerEventArgs e);
         public event WorkerHandler TakeCargoEvent;
+        public event WorkerHandler DropCargoEvent;
         protected WorkerType ThisWorkerType;
-        public ICargo TakedCargo { get; protected set; }
+        public ICargo TakedCargo { get; private set; }
         public void Take(ICargo cargo)
         {
             TakedCargo = cargo;
@@ -30,6 +31,20 @@ namespace Cargolator.Domain.Base.AbstractClasses
             TakeCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} cannot take the cargo {cargo.Id}. He has already taken the cargo {TakedCargo.Id}", false));
             return false;
         }
-
+        public void DropCargo()
+        {
+            TakedCargo = null;
+            TakeCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} successfully drop his cargo.", true));
+        }
+        public bool TryDropCargo()
+        {
+            if (TakedCargo is not null)
+            {
+                DropCargo();
+                return true;
+            }
+            TakeCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} cannot drop his cargo. He doesn't have it.", false));
+            return false;
+        }
     }
 }
