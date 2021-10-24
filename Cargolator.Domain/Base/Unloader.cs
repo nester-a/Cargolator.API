@@ -1,4 +1,5 @@
 ﻿using Cargolator.Domain.Base.AbstractClasses;
+using Cargolator.Domain.Base.Enums;
 using Cargolator.Domain.Base.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,10 @@ namespace Cargolator.Domain.Base
 {
     public class Unloader : Worker, IUnloader
     {
+        public Unloader()
+        {
+            ThisWorkerType = WorkerType.Unloader;
+        }
         public bool TryUnload(ILoadable container)
         {
             if(TakedCargo is null)
