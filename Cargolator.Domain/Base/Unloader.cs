@@ -23,5 +23,16 @@ namespace Cargolator.Domain.Base
         {
             TakedCargo = container.LoadedCargo.Pop();
         }
+
+        public bool PlaceToStock(IStock stock)
+        {
+            if (TakedCargo is not null)
+            {
+                stock.CargosStock.Enqueue(TakedCargo);
+                TakedCargo = null;
+                return true;
+            }
+            return false;
+        }
     }
 }

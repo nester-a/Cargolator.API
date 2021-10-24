@@ -23,30 +23,6 @@ namespace Cargolator.Domain.Base.AbstractClasses
             }
             return false;
         }
-        public bool PlaceToStock(IStock stock)
-        {
-            if(TakedCargo is not null)
-            {
-                stock.CargosStock.Enqueue(TakedCargo);
-                TakedCargo = null;
-                return true;
-            }
-            return false;
-        }
 
-        public void TakeFromStock(IStock stock)
-        {
-            TakedCargo = stock.CargosStock.Dequeue();
-        }
-
-        public bool TryTakeFromStock(IStock stock)
-        {
-            if (TakedCargo is null)
-            {
-                TakeFromStock(stock);
-                return true;
-            }
-            return false;
-        }
     }
 }

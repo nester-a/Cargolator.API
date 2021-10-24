@@ -32,5 +32,20 @@ namespace Cargolator.Domain.Base
             TakedCargo.Length = TakedCargo.Width;
             TakedCargo.Width = tmp;
         }
+
+        public void TakeFromStock(IStock stock)
+        {
+            TakedCargo = stock.CargosStock.Dequeue();
+        }
+
+        public bool TryTakeFromStock(IStock stock)
+        {
+            if (TakedCargo is null && stock.CargosStock.Count > 0)
+            {
+                TakeFromStock(stock);
+                return true;
+            }
+            return false;
+        }
     }
 }

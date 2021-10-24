@@ -11,5 +11,7 @@ namespace Cargolator.Domain.Base.Interfaces
         void Load(ILoadable container);
         bool TryLoad(ILoadable container);
         void Rotate();
+        void TakeFromStock(IStock stock);
+        bool TryTakeFromStock(IStock stock);
     }
 }
