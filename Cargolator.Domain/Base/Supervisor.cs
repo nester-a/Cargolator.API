@@ -103,5 +103,58 @@ namespace Cargolator.Domain.Base
                 }
             }
         }
+        public bool CheckSquare(IPoint startPoint, ICargo cargo)
+        {
+            for (int i = startPoint.X; i < startPoint.X + cargo.Width; i++)
+            {
+                for (int j = startPoint.Y; j < startPoint.Y + cargo.Length; j++)
+                {
+                    if(ContainerMap[i,j] is not null)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        public bool FillMap(IPoint startPoint, ICargo cargo)
+        {
+            if(CheckSquare(startPoint, cargo))
+            {
+                for (int i = startPoint.X; i < startPoint.X + cargo.Width; i++)
+                {
+                    for (int j = startPoint.Y; j < startPoint.Y + cargo.Length; j++)
+                    {
+                        ContainerMap[i, j] = cargo.Id.ToString();
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
+        public bool EraceCargoFromMap(ICargo cargo)
+        {
+            if (LoadList.ContainsKey(cargo.Id))
+            {
+                int s = cargo.Length * cargo.Width;
+                for (int i = LoadList[cargo.Id].UpperLeftCorner.X; i <= LoadList[cargo.Id].LowerRightCorner.X; i++)
+                {
+                    for (int j = LoadList[cargo.Id].UpperLeftCorner.Y; j <= LoadList[cargo.Id].LowerRightCorner.Y; j++)
+                    {
+                        if (ContainerMap[i, j] == cargo.Id.ToString())
+                        {
+                            s--;
+                            ContainerMap[i, j] = null;
+                            if (s == 0)
+                            {
+                                LoadList.Remove(cargo.Id);
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        }
     }
 }

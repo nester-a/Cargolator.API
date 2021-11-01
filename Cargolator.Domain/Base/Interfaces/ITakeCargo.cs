@@ -10,8 +10,6 @@ namespace Cargolator.Domain.Base.Interfaces
     {
         ICargo TakedCargo { get; }
         void Take(ICargo cargo);
-        void TakeFromStock(IStock stock);
-        bool TryTakeFromStock(IStock stock);
         bool TryTake(ICargo cargo);
     }
 }

@@ -1,4 +1,6 @@
 ﻿using Cargolator.Domain.Base.AbstractClasses;
+using Cargolator.Domain.Base.Enums;
+using Cargolator.Domain.Base.EventArgs;
 using Cargolator.Domain.Base.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,19 +12,33 @@ namespace Cargolator.Domain.Base
 {
     public class Loader : Worker, ILoader
     {
+        public event WorkerHandler LoadCargoEvent;
+        public event WorkerHandler TakeFromStockCargoEvent;
+        public event WorkerHandler RotateCargoEvent;
+        public Loader()
+        {
+            ThisWorkerType = WorkerType.Loader;
+        }
         public void Load(ILoadable container)
         {
             container.LoadedCargo.Push(TakedCargo);
-            TakedCargo = null;
+            LoadCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} successfully load the cargo {TakedCargo.Id} to the container.", true));
+            TryDropCargo();
         }
 
         public bool TryLoad(ILoadable container)
         {
-            if (TakedCargo is null)
+            if (TakedCargo is not null && container is not null)
             {
                 Load(container);
                 return true;
             }
+            if (container is null)
+            {
+                LoadCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} cannot load the cargo {TakedCargo.Id} to the container. Container is not created.", false));
+                return false;
+            }
+            LoadCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} cannot load the cargo {TakedCargo.Id} to the container. He doesn't have it.", false));
             return false;
         }
 
@@ -31,6 +47,30 @@ namespace Cargolator.Domain.Base
             int tmp = TakedCargo.Length;
             TakedCargo.Length = TakedCargo.Width;
             TakedCargo.Width = tmp;
+        }
+        public bool TryRotate()
+        {
+            if (TakedCargo is not null && TakedCargo.Length != TakedCargo.Width)
+            {
+                Rotate();
+                return true;
+            }
+            return false;
+        }
+
+        public void TakeFromStock(IStock stock)
+        {
+            TryTake(stock.CargosStock.Dequeue());
+        }
+
+        public bool TryTakeFromStock(IStock stock)
+        {
+            if (TakedCargo is null && stock.CargosStock.Count > 0)
+            {
+                TakeFromStock(stock);
+                return true;
+            }
+            return false;
         }
     }
 }

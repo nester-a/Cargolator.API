@@ -1,4 +1,6 @@
-﻿using Cargolator.Domain.Base.Interfaces;
+﻿using Cargolator.Domain.Base.Enums;
+using Cargolator.Domain.Base.EventArgs;
+using Cargolator.Domain.Base.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +11,15 @@ namespace Cargolator.Domain.Base.AbstractClasses
 {
     public abstract class Worker : ITakeCargo
     {
-        public ICargo TakedCargo { get; protected set; }
+        public delegate void WorkerHandler(object sender, WorkerEventArgs e);
+        public event WorkerHandler TakeCargoEvent;
+        public event WorkerHandler DropCargoEvent;
+        protected WorkerType ThisWorkerType;
+        public ICargo TakedCargo { get; private set; }
         public void Take(ICargo cargo)
         {
             TakedCargo = cargo;
+            TakeCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} successfully took the cargo {cargo.Id}", true));
         }
         public bool TryTake(ICargo cargo)
         {
@@ -21,31 +28,22 @@ namespace Cargolator.Domain.Base.AbstractClasses
                 Take(cargo);
                 return true;
             }
+            TakeCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} cannot take the cargo {cargo.Id}. He has already taken the cargo {TakedCargo.Id}", false));
             return false;
         }
-        public bool PlaceToStock(IStock stock)
+        public void DropCargo()
         {
-            if(TakedCargo is not null)
+            TakedCargo = null;
+            TakeCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} successfully drop his cargo.", true));
+        }
+        public bool TryDropCargo()
+        {
+            if (TakedCargo is not null)
             {
-                stock.CargosStock.Enqueue(TakedCargo);
-                TakedCargo = null;
+                DropCargo();
                 return true;
             }
-            return false;
-        }
-
-        public void TakeFromStock(IStock stock)
-        {
-            TakedCargo = stock.CargosStock.Dequeue();
-        }
-
-        public bool TryTakeFromStock(IStock stock)
-        {
-            if (TakedCargo is null)
-            {
-                TakeFromStock(stock);
-                return true;
-            }
+            TakeCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} cannot drop his cargo. He doesn't have it.", false));
             return false;
         }
     }
