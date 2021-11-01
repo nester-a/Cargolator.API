@@ -26,8 +26,12 @@ namespace Cargolator.Console
             loader.TryTakeFromStock(stock);
             Coordinates lc = supervisor.FindLoadPlace(loader.TakedCargo);
             SomeHelp();
+            supervisor.LoadList.Add(cargo1.Id, lc);
             System.Console.ReadLine();
-            
+            System.Console.WriteLine();
+            supervisor.EraceCargoFromMap(cargo1);
+            SomeHelp();
+            System.Console.ReadLine();
         }
         private void SomeHelp()
         {

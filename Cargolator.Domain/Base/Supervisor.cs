@@ -103,5 +103,28 @@ namespace Cargolator.Domain.Base
                 }
             }
         }
+        public bool EraceCargoFromMap(ICargo cargo)
+        {
+            if (LoadList.ContainsKey(cargo.Id))
+            {
+                int s = cargo.Length * cargo.Width;
+                for (int i = LoadList[cargo.Id].UpperLeftCorner.X; i <= LoadList[cargo.Id].LowerRightCorner.X; i++)
+                {
+                    for (int j = LoadList[cargo.Id].UpperLeftCorner.Y; j <= LoadList[cargo.Id].LowerRightCorner.Y; j++)
+                    {
+                        if (ContainerMap[i, j] == cargo.Id.ToString())
+                        {
+                            s--;
+                            ContainerMap[i, j] = null;
+                            if (s == 0)
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        }
     }
 }
