@@ -147,6 +147,7 @@ namespace Cargolator.Domain.Base
                             ContainerMap[i, j] = null;
                             if (s == 0)
                             {
+                                LoadList.Remove(cargo.Id);
                                 return true;
                             }
                         }

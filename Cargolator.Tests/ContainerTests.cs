@@ -36,7 +36,7 @@ namespace Cargolator.Tests
         }
 
         [Fact]
-        public void UnloadContainerResutl()
+        public void UnloadContainerResult()
         {
             // Arrange
             Container cnt = new Container() { Length = 10, Width = 10 };
@@ -61,6 +61,46 @@ namespace Cargolator.Tests
 
             // Assert
             Assert.True(!cnt.LoadedCargo.Contains(crg));
+        }
+
+        [Fact]
+        public void LoadUnloadRotateLoadContainerResult()
+        {
+            // Arrange
+            Container cnt = new Container() { Length = 10, Width = 10 };
+            Supervisor sv = new Supervisor(cnt);
+            Cargo crg = new Cargo() { Length = 4, Width = 2 };
+            Loader ldr = new Loader();
+            Unloader unldr = new Unloader();
+            Stock stck = new Stock();
+
+            // Act
+            Coordinates loadCoordinates = sv.FindLoadPlace(crg);
+            if (loadCoordinates is not null)
+            {
+                sv.LoadList.Add(crg.Id, loadCoordinates);
+                ldr.TryTake(crg);
+                if (ldr.TakedCargo is not null)
+                {
+                    ldr.Load(cnt);
+                }
+            }
+            if (unldr.TryUnload(cnt))
+                sv.EraceCargoFromMap(unldr.TakedCargo);
+
+            if (unldr.TryPlaceToStock(stck))
+            {
+                if (ldr.TryTakeFromStock(stck))
+                {
+                    if (ldr.TryRotate())
+                    {
+                        sv.LoadList.Add(crg.Id, sv.FindLoadPlace(ldr.TakedCargo));
+                    }
+                }
+            }
+
+            // Assert
+            Assert.True(ldr.TryLoad(cnt));
         }
     }
 }
