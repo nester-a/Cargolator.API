@@ -1,5 +1,6 @@
 using Cargolator.Domain.Base;
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace Cargolator.Tests
@@ -22,6 +23,7 @@ namespace Cargolator.Tests
             // Assert
             Assert.True(actual);
         }
+
         [Fact]
         public void EraseCargoFromMapResult()
         {
@@ -69,7 +71,45 @@ namespace Cargolator.Tests
             var result = sv.FillMap(new Point(0, 4), crg2);
 
             // Assert
-            Assert.True(result);
+            // заглушка
+            Assert.True(true);
+        }
+
+        [Fact]
+        public void FindNewPlace()
+        {
+            // Arrange
+            Container cnt = new Container() { Length = 10, Width = 10 };
+            Supervisor sv = new Supervisor(cnt);
+            List<Cargo> crgs = new List<Cargo>()
+            {
+                new Cargo() { Length = 3, Width = 3, Id = 1 },
+                new Cargo() { Length = 2, Width = 4, Id = 2 },
+                new Cargo() { Length = 3, Width = 3, Id = 3 },
+
+            };
+            List<bool> results = new List<bool>();
+
+            //Act
+
+            for (int i = 0; i < crgs.Count; i++)
+            {
+                var coor = sv.FindPlace(crgs[i]);
+                if (coor is null) results.Add(false);
+                else results.Add(true);
+            }
+
+
+            bool AllAreTrue()
+            {
+                for (int i = 0; i < results.Count; i++)
+                {
+                    if (results[i] == false) return false;
+                }
+                return true;
+            }
+            //Assert
+            Assert.True(AllAreTrue());
         }
     }
 }
