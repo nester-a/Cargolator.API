@@ -23,7 +23,7 @@ namespace Cargolator.Console
         public void StartWork()
         {
             Coordinates lc = null;
-            stock.AddOnStock(cargo1, cargo3, cargo4, cargo2);
+            stock.AddRangeOnStock(cargo1, cargo3, cargo4, cargo2);
 
             for (int i = 0; i < 4; i++)
             {
