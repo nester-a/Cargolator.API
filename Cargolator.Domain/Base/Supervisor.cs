@@ -139,9 +139,9 @@ namespace Cargolator.Domain.Base
             if (LoadList.ContainsKey(cargo.Id))
             {
                 int s = cargo.Length * cargo.Width;
-                for (int i = LoadList[cargo.Id].UpperLeftCorner.X; i <= LoadList[cargo.Id].LowerRightCorner.X; i++)
+                for (int i = LoadList[cargo.Id].UpperLeftCorner.Y; i <= LoadList[cargo.Id].LowerRightCorner.Y; i++)
                 {
-                    for (int j = LoadList[cargo.Id].UpperLeftCorner.Y; j <= LoadList[cargo.Id].LowerRightCorner.Y; j++)
+                    for (int j = LoadList[cargo.Id].UpperLeftCorner.X; j <= LoadList[cargo.Id].LowerRightCorner.X; j++)
                     {
                         if (ContainerMap[i, j] == cargo.Id.ToString())
                         {

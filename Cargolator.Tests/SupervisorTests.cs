@@ -50,8 +50,8 @@ namespace Cargolator.Tests
             Cargo crg2 = new Cargo() { Length = 2, Width = 2 };
 
             // Act
-            sv.LoadList.Add(crg.Id, sv.FindLoadPlace(crg));
-            var result = sv.CheckSquare(new Point(1, 2), crg2);
+            sv.LoadList.Add(crg.Id, sv.FindPlace(crg));
+            var result = sv.CheckSquare(new Point(1, 1), crg2);
 
             // Assert
             Assert.True(!result);
