@@ -23,5 +23,13 @@ namespace Cargolator.API.Base
                 CargosStock.Enqueue(cargos[i]);
             }
         }
+
+        public void AddRangeOnStock(ICollection<Cargo> cargos)
+        {
+            foreach (var cargo in cargos)
+            {
+                AddOnStock(cargo);
+            }
+        }
     }
 }
