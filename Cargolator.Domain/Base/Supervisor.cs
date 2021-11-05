@@ -109,10 +109,11 @@ namespace Cargolator.Domain.Base
             {
                 for (int width = startPoint.X; width < startPoint.X + cargo.Width; width++)
                 {
-                    if(ContainerMap[length, width] is not null)
+                    if (length < ContainerMap.GetLength(0) && width < ContainerMap.GetLength(1))
                     {
-                        return false;
-                    }
+                        if (ContainerMap[length, width] is not null) return false;
+                    } 
+                    else return false;
                 }
             }
             return true;
@@ -125,6 +126,7 @@ namespace Cargolator.Domain.Base
             {
                 for (int width = startPoint.X; width < startPoint.X + cargo.Width; width++)
                 {
+                    if (length >= ContainerMap.GetLength(0) || width >= ContainerMap.GetLength(1)) return null;
                     ContainerMap[length, width] = cargo.Id.ToString();
                     X = width;
                 }

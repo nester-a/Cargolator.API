@@ -86,6 +86,12 @@ namespace Cargolator.Tests
                 new Cargo() { Length = 3, Width = 3, Id = 1 },
                 new Cargo() { Length = 2, Width = 4, Id = 2 },
                 new Cargo() { Length = 3, Width = 3, Id = 3 },
+                new Cargo() { Length = 5, Width = 6, Id = 4 },
+                new Cargo() { Length = 1, Width = 4, Id = 5 },
+                new Cargo() { Length = 2, Width = 2, Id = 6 },
+                new Cargo() { Length = 2, Width = 2, Id = 7 },
+                new Cargo() { Length = 2, Width = 2, Id = 8 },
+                new Cargo() { Length = 2, Width = 2, Id = 9 },
 
             };
             List<bool> results = new List<bool>();

@@ -60,7 +60,7 @@ namespace Cargolator.Console
             {
                 for (int j = 0; j < supervisor.ContainerMap.GetLength(1); j++)
                 {
-                    if(supervisor.ContainerMap[i,j] is null)
+                    if (supervisor.ContainerMap[i, j] is null)
                     {
                         System.Console.Write("|_|");
                     }
@@ -68,6 +68,65 @@ namespace Cargolator.Console
                         System.Console.Write($"|{supervisor.ContainerMap[i, j]}|");
                 }
                 System.Console.WriteLine();
+            }
+        }
+    }
+    public class WorkModel2
+    {
+        private void SomeHelp()
+        {
+            for (int i = 0; i < sv.ContainerMap.GetLength(0); i++)
+            {
+                for (int j = 0; j < sv.ContainerMap.GetLength(1); j++)
+                {
+                    if (sv.ContainerMap[i, j] is null)
+                    {
+                        System.Console.Write("|_|");
+                    }
+                    else System.Console.Write($"|{sv.ContainerMap[i, j]}|");
+                }
+                System.Console.WriteLine();
+            }
+            System.Console.WriteLine();
+        }
+
+        Stock stock = new Stock();
+        Unloader unloader = new Unloader();
+        static Container cnt = new Container() { Length = 10, Width = 10 };
+        Supervisor sv = new Supervisor(cnt);
+        List<Cargo> crgs = new List<Cargo>()
+            {
+                new Cargo() { Length = 3, Width = 3, Id = 1 },
+                new Cargo() { Length = 2, Width = 4, Id = 2 },
+                new Cargo() { Length = 3, Width = 3, Id = 3 },
+                new Cargo() { Length = 5, Width = 6, Id = 4 },
+                new Cargo() { Length = 1, Width = 4, Id = 5 },
+                new Cargo() { Length = 2, Width = 2, Id = 6 },
+                new Cargo() { Length = 2, Width = 2, Id = 7 },
+                new Cargo() { Length = 2, Width = 2, Id = 8 },
+                new Cargo() { Length = 2, Width = 2, Id = 9 },
+
+            };
+        List<bool> results = new List<bool>();
+        public void StartWork()
+        {
+            for (int i = 0; i < crgs.Count; i++)
+            {
+                var coor = sv.FindPlace(crgs[i]);
+                if (coor is null) results.Add(false);
+                else results.Add(true);
+                SomeHelp();
+            }
+            System.Console.ReadLine();
+            for (int i = 0; i < crgs.Count; i++)
+            {
+                if (unloader.TryUnload(cnt))
+                {
+                    sv.EraceCargoFromMap(unloader.TakedCargo);
+                    unloader.PlaceToStock(stock);
+                }
+                SomeHelp();
+                System.Console.ReadLine();
             }
         }
     }

@@ -6,7 +6,7 @@ namespace Cargolator.Console
     {
         static void Main(string[] args)
         {
-            WorkModel wm = new WorkModel();
+            WorkModel2 wm = new WorkModel2();
             wm.StartWork();
             System.Console.WriteLine("Hello World!");
         }
