@@ -1,5 +1,5 @@
-﻿using Cargolator.Domain.Base;
-using Cargolator.Domain.Base.Interfaces;
+﻿using Cargolator.API.Base;
+using Cargolator.API.Base.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

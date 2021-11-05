@@ -1,4 +1,4 @@
-﻿using Cargolator.Domain.Base;
+﻿using Cargolator.API.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,4 +1,4 @@
-using Cargolator.Domain.Base;
+using Cargolator.API.Base;
 using System;
 using System.Collections.Generic;
 using Xunit;
@@ -33,7 +33,7 @@ namespace Cargolator.Tests
             Cargo crg = new Cargo() { Length = 4, Width = 2 };
 
             // Act
-            sv.LoadList.Add(crg.Id, sv.FindLoadPlace(crg));
+            sv.LoadList.Add(crg.Id, sv.FindPlace(crg));
             bool result = sv.EraceCargoFromMap(crg);
 
             // Assert

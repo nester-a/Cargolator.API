@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cargolator.Domain.Base.Interfaces
+namespace Cargolator.API.Base.Interfaces
 {
     public interface ITakeCargo
     {

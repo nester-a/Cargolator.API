@@ -1,14 +1,14 @@
-﻿using Cargolator.Domain.Base.AbstractClasses;
-using Cargolator.Domain.Base.Enums;
-using Cargolator.Domain.Base.EventArgs;
-using Cargolator.Domain.Base.Interfaces;
+﻿using Cargolator.API.Base.AbstractClasses;
+using Cargolator.API.Base.Enums;
+using Cargolator.API.Base.EventArgs;
+using Cargolator.API.Base.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cargolator.Domain.Base
+namespace Cargolator.API.Base
 {
     public class Loader : Worker, ILoader
     {

@@ -1,11 +1,11 @@
-﻿using Cargolator.Domain.Base.Interfaces;
+﻿using Cargolator.API.Base.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cargolator.Domain.Base
+namespace Cargolator.API.Base
 {
     public class Stock : IStock
     {

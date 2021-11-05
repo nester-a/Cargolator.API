@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Cargolator.Domain\Cargolator.Domain.csproj" />
+    <ProjectReference Include="..\Cargolator.Domain\Cargolator.API.csproj" />
   </ItemGroup>
 
 </Project>
