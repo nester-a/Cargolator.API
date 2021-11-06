@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.31702.278
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cargolator.Console", "Cargolator.Console\Cargolator.Console.csproj", "{236EA18D-B9B5-4EC1-81BA-1FAAB4F3FBD0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cargolator.Domain", "Cargolator.Domain\Cargolator.Domain.csproj", "{EED1217C-1CCC-4796-97C8-966993A6ACFD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cargolator.API", "Cargolator.Domain\Cargolator.API.csproj", "{EED1217C-1CCC-4796-97C8-966993A6ACFD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cargolator.Tests", "Cargolator.Tests\Cargolator.Tests.csproj", "{2CC7669C-06A4-4C14-B140-A702FFD73FA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cargolator.Tests", "Cargolator.Tests\Cargolator.Tests.csproj", "{2CC7669C-06A4-4C14-B140-A702FFD73FA1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

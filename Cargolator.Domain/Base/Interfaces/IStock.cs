@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cargolator.Domain.Base.Interfaces
+namespace Cargolator.API.Base.Interfaces
 {
     public interface IStock
     {
         Queue<ICargo> CargosStock { get; set; }
-        void AddOnStock(params ICargo[] cargos);
+        void AddRangeOnStock(params ICargo[] cargos);
+        void AddOnStock(ICargo cargo);
     }
 }

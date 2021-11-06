@@ -1,4 +1,4 @@
-﻿using Cargolator.Domain.Base;
+﻿using Cargolator.API.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +20,7 @@ namespace Cargolator.Tests
             Loader ldr = new Loader();
 
             // Act
-            Coordinates loadCoordinates = sv.FindLoadPlace(crg);
+            Coordinates loadCoordinates = sv.FindPlace(crg);
             if (loadCoordinates is not null)
             {
                 sv.LoadList.Add(crg.Id, loadCoordinates);
@@ -75,7 +75,7 @@ namespace Cargolator.Tests
             Stock stck = new Stock();
 
             // Act
-            Coordinates loadCoordinates = sv.FindLoadPlace(crg);
+            Coordinates loadCoordinates = sv.FindPlace(crg);
             if (loadCoordinates is not null)
             {
                 sv.LoadList.Add(crg.Id, loadCoordinates);
@@ -94,13 +94,52 @@ namespace Cargolator.Tests
                 {
                     if (ldr.TryRotate())
                     {
-                        sv.LoadList.Add(crg.Id, sv.FindLoadPlace(ldr.TakedCargo));
+                        sv.LoadList.Add(crg.Id, sv.FindPlace(ldr.TakedCargo));
                     }
                 }
             }
 
             // Assert
             Assert.True(ldr.TryLoad(cnt));
+        }
+
+        [Fact]
+        public void LoadFewGoodsResult()
+        {
+            // Arrange
+            Container cnt = new Container() { Length = 10, Width = 10 };
+            Supervisor sv = new Supervisor(cnt);
+            List<Cargo> crgList = new List<Cargo>() {
+                new Cargo() { Id = 1, Length = 4, Width = 2 },
+                new Cargo() { Id = 2, Length = 3, Width = 3 },
+                new Cargo() { Id = 3, Length = 5, Width = 5 },
+            };
+            Loader ldr = new Loader();
+
+            // Act
+            for (int i = 0; i < 3; i++)
+            {
+                Coordinates loadCoordinates = sv.FindPlace(crgList[i]);
+                if (loadCoordinates is not null)
+                {
+                    sv.LoadList.Add(crgList[i].Id, loadCoordinates);
+                    ldr.TryTake(crgList[i]);
+                    if (ldr.TakedCargo is not null)
+                    {
+                        ldr.Load(cnt);
+                    }
+                }
+            }
+            // Assert
+            bool ContainAllGoods()
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    if (!cnt.LoadedCargo.Contains(crgList[i])) return false;
+                }
+                return true;
+            }
+            Assert.True(ContainAllGoods());
         }
     }
 }

@@ -1,12 +1,12 @@
-﻿using Cargolator.Domain.Base.AbstractClasses;
-using Cargolator.Domain.Base.Interfaces;
+﻿using Cargolator.API.Base.AbstractClasses;
+using Cargolator.API.Base.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cargolator.Domain.Base
+namespace Cargolator.API.Base
 {
     public class Supervisor : ISupervisor
     {
@@ -105,41 +105,43 @@ namespace Cargolator.Domain.Base
         }
         public bool CheckSquare(IPoint startPoint, ICargo cargo)
         {
-            for (int i = startPoint.X; i < startPoint.X + cargo.Width; i++)
+            for (int length = startPoint.Y; length < startPoint.Y + cargo.Length; length++)
             {
-                for (int j = startPoint.Y; j < startPoint.Y + cargo.Length; j++)
+                for (int width = startPoint.X; width < startPoint.X + cargo.Width; width++)
                 {
-                    if(ContainerMap[i,j] is not null)
+                    if (length < ContainerMap.GetLength(0) && width < ContainerMap.GetLength(1))
                     {
-                        return false;
-                    }
+                        if (ContainerMap[length, width] is not null) return false;
+                    } 
+                    else return false;
                 }
             }
             return true;
         }
-        public bool FillMap(IPoint startPoint, ICargo cargo)
+        public Point FillMap(IPoint startPoint, ICargo cargo)
         {
-            if(CheckSquare(startPoint, cargo))
+            int X = 0;
+            int Y = 0;
+            for (int length = startPoint.Y; length < startPoint.Y + cargo.Length; length++)
             {
-                for (int i = startPoint.X; i < startPoint.X + cargo.Width; i++)
+                for (int width = startPoint.X; width < startPoint.X + cargo.Width; width++)
                 {
-                    for (int j = startPoint.Y; j < startPoint.Y + cargo.Length; j++)
-                    {
-                        ContainerMap[i, j] = cargo.Id.ToString();
-                    }
+                    if (length >= ContainerMap.GetLength(0) || width >= ContainerMap.GetLength(1)) return null;
+                    ContainerMap[length, width] = cargo.Id.ToString();
+                    X = width;
                 }
-                return true;
+                Y = length;
             }
-            return false;
+            return new Point(X, Y);
         }
         public bool EraceCargoFromMap(ICargo cargo)
         {
             if (LoadList.ContainsKey(cargo.Id))
             {
                 int s = cargo.Length * cargo.Width;
-                for (int i = LoadList[cargo.Id].UpperLeftCorner.X; i <= LoadList[cargo.Id].LowerRightCorner.X; i++)
+                for (int i = LoadList[cargo.Id].UpperLeftCorner.Y; i <= LoadList[cargo.Id].LowerRightCorner.Y; i++)
                 {
-                    for (int j = LoadList[cargo.Id].UpperLeftCorner.Y; j <= LoadList[cargo.Id].LowerRightCorner.Y; j++)
+                    for (int j = LoadList[cargo.Id].UpperLeftCorner.X; j <= LoadList[cargo.Id].LowerRightCorner.X; j++)
                     {
                         if (ContainerMap[i, j] == cargo.Id.ToString())
                         {
@@ -155,6 +157,24 @@ namespace Cargolator.Domain.Base
                 }
             }
             return false;
+        }
+
+        public Coordinates FindPlace(ICargo cargo)
+        {
+            for (int i = 0; i < ContainerMap.GetLength(0); i++)
+            {
+                for (int j = 0; j < ContainerMap.GetLength(1); j++)
+                {
+                    if (CheckSquare(new Point(j, i), cargo))
+                    {
+                        Point startPoint = new Point(j, i);
+                        Point endPoint = FillMap(startPoint, cargo);
+                        return new Coordinates(startPoint, endPoint);
+                    }
+                    else continue;
+                }
+            }
+            return null;
         }
     }
 }

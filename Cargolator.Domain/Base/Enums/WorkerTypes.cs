@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cargolator.Domain.Base.Enums
+namespace Cargolator.API.Base.Enums
 {
     public enum WorkerType
     {

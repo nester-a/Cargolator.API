@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cargolator.Domain.Base.EventArgs
+namespace Cargolator.API.Base.EventArgs
 {
     public class WorkerEventArgs
     {
