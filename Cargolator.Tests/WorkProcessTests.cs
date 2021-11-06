@@ -1,4 +1,5 @@
 ﻿using Cargolator.API.Base;
+using Cargolator.API.Base.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,9 @@ namespace Cargolator.Tests
             List<Cargo> crgs = new List<Cargo>();
             Loader ldr = new Loader();
             Supervisor sv = new Supervisor(cnt);
+            Unloader unldr = new Unloader();
             int tryCount = 0;
+            Dictionary<int, string> logger = new Dictionary<int, string>();
 
             // **Act**
 
@@ -46,21 +49,34 @@ namespace Cargolator.Tests
                     {
                         sv.LoadList.Add(ldr.TakedCargo.Id, coor);
                         ldr.TryLoad(cnt);
+                        tryCount = 0;
                     }
                     else
                     {
                         if (ldr.TryRotate())
                         {
                             Coordinates coor2 = sv.FindPlace(ldr.TakedCargo);
-                            if (coor is not null)
+                            if (coor2 is not null)
                             {
                                 sv.LoadList.Add(ldr.TakedCargo.Id, coor2);
                                 ldr.TryLoad(cnt);
+                                tryCount = 0;
                             }
                             else
                             {
                                 tryCount++;
-                                
+                                if (unldr.TryTakeFromWorker(ldr))
+                                {
+                                    if (unldr.TryPlaceToStock(stck))
+                                    {
+                                        if (tryCount == stck.CargosStock.Count)
+                                        {
+                                            unldr.TryTakeFromWorker(ldr);
+                                            unldr.TryPlaceToStock(stck);
+                                            break;
+                                        }
+                                    }
+                                }
                             }
                         }
 
@@ -81,7 +97,37 @@ namespace Cargolator.Tests
                 }
                 return true;
             }
-            Assert.True(ContainerContainsCargo());
+            
+            bool AllCargoOnItsPlace()
+            {
+                foreach (var cargo in sv.LoadList)
+                {
+                    if(!CheckHelper(cargo.Key, cargo.Value))
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            bool CheckHelper(int id, ICoordinates coor)
+            {
+                for (int i = coor.UpperLeftCorner.Y; i < coor.LowerRightCorner.Y; i++)
+                {
+                    for (int j = coor.UpperLeftCorner.X; j < coor.LowerRightCorner.X; j++)
+                    {
+                        if(sv.ContainerMap[i,j] != id.ToString())
+                        {
+                            logger.Add(id, "Груза нет");
+                            return false;
+                        }
+                    }
+                }
+                logger.Add(id, "Груз есть");
+                return true;
+            }
+
+            Assert.True(ContainerContainsCargo() && AllCargoOnItsPlace());
         }
     }
 }
