@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace Cargolator.API.Base.AbstractClasses
 {
-    public abstract class Worker : ITakeCargo
+    public abstract class Worker : ITakeFromWorker
     {
         public delegate void WorkerHandler(object sender, WorkerEventArgs e);
         public event WorkerHandler TakeCargoEvent;
         public event WorkerHandler DropCargoEvent;
-        protected WorkerType ThisWorkerType;
+        public WorkerType ThisWorkerType { get; protected set; }
         public ICargo TakedCargo { get; private set; }
         public void Take(ICargo cargo)
         {
@@ -34,7 +34,7 @@ namespace Cargolator.API.Base.AbstractClasses
         public void DropCargo()
         {
             TakedCargo = null;
-            TakeCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} successfully drop his cargo.", true));
+            DropCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} successfully drop his cargo.", true));
         }
         public bool TryDropCargo()
         {
@@ -43,24 +43,37 @@ namespace Cargolator.API.Base.AbstractClasses
                 DropCargo();
                 return true;
             }
-            TakeCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} cannot drop his cargo. He doesn't have it.", false));
+            DropCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} cannot drop his cargo. He doesn't have it.", false));
             return false;
         }
-        public void TakeFromWorker(ref Worker worker)
+        public void TakeFromWorker(ITakeFromWorker worker)
         {
             this.TryTake(worker.TakedCargo);
             worker.TryDropCargo();
             TakeCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} successfully took the cargo {TakedCargo.Id} from other worker ({nameof(worker.ThisWorkerType)})", true));
         }
-        public bool TryTakeFromWorker(ref Worker worker)
+        public bool TryTakeFromWorker(ITakeFromWorker worker)
         {
             if(worker is not null && worker.TakedCargo is not null && this.TakedCargo is null)
             {
-                TakeFromWorker(ref worker);
+                TakeFromWorker(worker);
                 return true;
             }
             else if(worker is null)
-            TakeCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} can't take the cargo from other worker ({nameof(worker.ThisWorkerType)})", true));
+            {
+                TakeCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} can't take the cargo from other worker. This worker is null.", false));
+                return false;
+            }
+            else if(worker.TakedCargo is null)
+            {
+                TakeCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} can't take the cargo from other worker {nameof(worker.ThisWorkerType)}. Other worker doesn't have it.", false));
+                return false;
+            }
+            else if(TakedCargo is not null)
+            {
+                TakeCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} can't take the cargo from other worker {nameof(worker.ThisWorkerType)}. He alredy has it.", false));
+                return false;
+            }
             return false;
         }
     }
