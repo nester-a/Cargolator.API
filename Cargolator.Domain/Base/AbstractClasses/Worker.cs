@@ -46,5 +46,22 @@ namespace Cargolator.API.Base.AbstractClasses
             TakeCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} cannot drop his cargo. He doesn't have it.", false));
             return false;
         }
+        public void TakeFromWorker(ref Worker worker)
+        {
+            this.TryTake(worker.TakedCargo);
+            worker.TryDropCargo();
+            TakeCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} successfully took the cargo {TakedCargo.Id} from other worker ({nameof(worker.ThisWorkerType)})", true));
+        }
+        public bool TryTakeFromWorker(ref Worker worker)
+        {
+            if(worker is not null && worker.TakedCargo is not null && this.TakedCargo is null)
+            {
+                TakeFromWorker(ref worker);
+                return true;
+            }
+            else if(worker is null)
+            TakeCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} can't take the cargo from other worker ({nameof(worker.ThisWorkerType)})", true));
+            return false;
+        }
     }
 }

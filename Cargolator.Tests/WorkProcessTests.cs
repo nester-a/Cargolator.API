@@ -19,8 +19,8 @@ namespace Cargolator.Tests
             Stock stck = new Stock();
             List<Cargo> crgs = new List<Cargo>();
             Loader ldr = new Loader();
-            Unloader unldr = new Unloader();
             Supervisor sv = new Supervisor(cnt);
+            int tryCount = 0;
 
             // **Act**
 
@@ -57,14 +57,31 @@ namespace Cargolator.Tests
                                 sv.LoadList.Add(ldr.TakedCargo.Id, coor2);
                                 ldr.TryLoad(cnt);
                             }
-                            else break;
+                            else
+                            {
+                                tryCount++;
+                                ldr.
+                            }
                         }
 
                     }
                 }
             }
 
+
             // **Asserts**
+            bool ContainerContainsCargo()
+            {
+                foreach (var cargo in cnt.LoadedCargo)
+                {
+                    if (!sv.LoadList.ContainsKey(cargo.Id))
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            Assert.True(ContainerContainsCargo());
         }
     }
 }
