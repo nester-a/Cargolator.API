@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Cargolator.Tests
 {
-    public class WorkerTests
+    public class WorkerTestsNS
     {
         [Fact]
         public void CargoFromOneWorkerToAnotherWorkerTest()
