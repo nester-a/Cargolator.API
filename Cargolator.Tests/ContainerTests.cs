@@ -14,9 +14,9 @@ namespace Cargolator.Tests
         public void LoadContainerResult()
         {
             // Arrange
-            Container cnt = new Container() { Length = 10, Width = 10 };
+            Container cnt = new Container(10, 10);
             Supervisor sv = new Supervisor(cnt);
-            Cargo crg = new Cargo() { Length = 4, Width = 2 };
+            Cargo crg = new Cargo(0, 4, 2);
             Loader ldr = new Loader();
 
             // Act
@@ -39,9 +39,9 @@ namespace Cargolator.Tests
         public void UnloadContainerResult()
         {
             // Arrange
-            Container cnt = new Container() { Length = 10, Width = 10 };
+            Container cnt = new Container(10, 10);
             Supervisor sv = new Supervisor(cnt);
-            Cargo crg = new Cargo() { Length = 4, Width = 2 };
+            Cargo crg = new Cargo(0, 4, 2);
             Loader ldr = new Loader();
             Unloader unldr = new Unloader();
 
@@ -67,9 +67,9 @@ namespace Cargolator.Tests
         public void LoadUnloadRotateLoadContainerResult()
         {
             // Arrange
-            Container cnt = new Container() { Length = 10, Width = 10 };
+            Container cnt = new Container(10, 10);
             Supervisor sv = new Supervisor(cnt);
-            Cargo crg = new Cargo() { Length = 4, Width = 2 };
+            Cargo crg = new Cargo(0, 4, 2);
             Loader ldr = new Loader();
             Unloader unldr = new Unloader();
             Stock stck = new Stock();
@@ -107,12 +107,12 @@ namespace Cargolator.Tests
         public void LoadFewGoodsResult()
         {
             // Arrange
-            Container cnt = new Container() { Length = 10, Width = 10 };
+            Container cnt = new Container(10, 10);
             Supervisor sv = new Supervisor(cnt);
             List<Cargo> crgList = new List<Cargo>() {
-                new Cargo() { Id = 1, Length = 4, Width = 2 },
-                new Cargo() { Id = 2, Length = 3, Width = 3 },
-                new Cargo() { Id = 3, Length = 5, Width = 5 },
+                new Cargo(1, 4, 2),
+                new Cargo(2, 3, 3),
+                new Cargo(3, 5, 5),
             };
             Loader ldr = new Loader();
 

@@ -11,14 +11,14 @@ namespace Cargolator.Console
     public class WorkModel
     {
         Stock stock = new Stock();
-        static Container container = new Container { Length = 10, Width = 5 };
+        static Container container = new Container ( 10, 5 );
         Loader loader = new Loader();
         Unloader unloader = new Unloader();
         Supervisor supervisor = new Supervisor(container);
-        Cargo cargo1 = new Cargo { Id = 1, Length = 4, Width = 2 };
-        Cargo cargo2 = new Cargo { Id = 2, Length = 1, Width = 2 };
-        Cargo cargo3 = new Cargo { Id = 3, Length = 5, Width = 2 };
-        Cargo cargo4 = new Cargo { Id = 4, Length = 2, Width = 2 };
+        Cargo cargo1 = new Cargo (1, 4, 2);
+        Cargo cargo2 = new Cargo (2, 1, 2);
+        Cargo cargo3 = new Cargo (3, 5, 2);
+        Cargo cargo4 = new Cargo (4, 2, 2);
         
         public void StartWork()
         {
@@ -92,19 +92,19 @@ namespace Cargolator.Console
 
         Stock stock = new Stock();
         Unloader unloader = new Unloader();
-        static Container cnt = new Container() { Length = 10, Width = 10 };
+        static Container cnt = new Container(10, 10);
         Supervisor sv = new Supervisor(cnt);
         List<Cargo> crgs = new List<Cargo>()
             {
-                new Cargo() { Length = 3, Width = 3, Id = 1 },
-                new Cargo() { Length = 2, Width = 4, Id = 2 },
-                new Cargo() { Length = 3, Width = 3, Id = 3 },
-                new Cargo() { Length = 5, Width = 6, Id = 4 },
-                new Cargo() { Length = 1, Width = 4, Id = 5 },
-                new Cargo() { Length = 2, Width = 2, Id = 6 },
-                new Cargo() { Length = 2, Width = 2, Id = 7 },
-                new Cargo() { Length = 2, Width = 2, Id = 8 },
-                new Cargo() { Length = 2, Width = 2, Id = 9 },
+                new Cargo(1, 3, 3),
+                new Cargo(2, 2, 4),
+                new Cargo(3, 3, 3),
+                new Cargo(4, 5, 6),
+                new Cargo(5, 1, 4),
+                new Cargo(6, 2, 2),
+                new Cargo(7, 2, 2),
+                new Cargo(8, 2, 2),
+                new Cargo(9, 2, 2),
 
             };
         List<bool> results = new List<bool>();

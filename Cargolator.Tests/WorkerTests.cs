@@ -14,7 +14,7 @@ namespace Cargolator.Tests
         public void CargoFromOneWorkerToAnotherWorkerTest()
         {
             // Arrange
-            Cargo crg = new Cargo() { Id = 1, Length = 1, Width = 1 };
+            Cargo crg = new Cargo(1, 1, 1);
             Loader ldr = new Loader();
             Unloader unldr = new Unloader();
 

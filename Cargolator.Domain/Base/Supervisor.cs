@@ -158,7 +158,6 @@ namespace Cargolator.API.Base
             }
             return false;
         }
-
         public Coordinates FindPlace(ICargo cargo)
         {
             for (int i = 0; i < ContainerMap.GetLength(0); i++)

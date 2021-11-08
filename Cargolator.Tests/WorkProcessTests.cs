@@ -16,7 +16,7 @@ namespace Cargolator.Tests
         {
             // **Arrange**
             Random rnd = new Random();
-            Container cnt = new Container() { Length = 12, Width = 3 };
+            Container cnt = new Container(12, 3);
             Stock stck = new Stock();
             List<Cargo> crgs = new List<Cargo>();
             Loader ldr = new Loader();
@@ -30,7 +30,7 @@ namespace Cargolator.Tests
             // Random cargo creating
             for (int i = 0; i < 10; i++)
             {
-                crgs.Add(new Cargo() { Id = i, Length = rnd.Next(1, 4), Width = rnd.Next(1, 4) });
+                crgs.Add(new Cargo(i, rnd.Next(1, 4), rnd.Next(1, 4)));
             }
 
             // Cargo sort

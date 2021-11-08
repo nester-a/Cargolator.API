@@ -14,5 +14,12 @@ namespace Cargolator.API.Base
         public int Length { get; set; }
 
         public int Width { get; set; }
+
+        public Cargo(int id, int length, int width)
+        {
+            Id = id;
+            Length = length;
+            Width = width;
+        }
     }
 }
