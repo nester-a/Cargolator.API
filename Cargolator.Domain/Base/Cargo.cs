@@ -21,5 +21,10 @@ namespace Cargolator.API.Base
             Length = length;
             Width = width;
         }
+        public override bool Equals(object obj)
+        {
+            var temp = obj as Cargo;
+            return Id.Equals(temp.Id) && Length.Equals(temp.Length) && Width.Equals(temp.Width);
+        }
     }
 }
