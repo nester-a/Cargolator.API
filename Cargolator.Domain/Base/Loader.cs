@@ -62,7 +62,7 @@ namespace Cargolator.API.Base
 
         public void TakeFromStock(IStock stock)
         {
-            TryTake(stock.CargosStock.Dequeue());
+            Take(stock.CargosStock.Dequeue());
             TakeFromStockCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} successfully take the cargo {TakedCargo.Id} from stock.", true));
         }
 
