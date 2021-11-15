@@ -23,8 +23,12 @@ namespace Cargolator.API.Base
         }
         public override bool Equals(object obj)
         {
-            var temp = obj as Cargo;
-            return Id.Equals(temp.Id) && Length.Equals(temp.Length) && Width.Equals(temp.Width);
+            if(obj is Cargo && obj is not null)
+            {
+                var temp = obj as Cargo;
+                return Id.Equals(temp.Id) && Length.Equals(temp.Length) && Width.Equals(temp.Width);
+            }
+            return false;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Cargolator.API.Base;
+using Cargolator.API.Base.AbstractClasses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,19 @@ namespace Cargolator.Tests
 
             // Act
             bool result = crg1.Equals(crg2);
+
+            // Assert
+            Assert.True(!result);
+        }
+        [Fact]
+        public void CargoEqualsWorkerFalseTest()
+        {
+            // Arrange
+            Cargo crg1 = new Cargo(0, 2, 2);
+            Worker wrk = new Loader();
+
+            // Act
+            bool result = crg1.Equals(wrk);
 
             // Assert
             Assert.True(!result);
