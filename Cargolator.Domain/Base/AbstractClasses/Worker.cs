@@ -18,12 +18,14 @@ namespace Cargolator.API.Base.AbstractClasses
         public ICargo TakedCargo { get; private set; }
         public void Take(ICargo cargo)
         {
+            if (cargo.Status == CargoStatus.OnHands) throw new ArgumentException("Cargo has wrong status", $"Cargo #{cargo.Id}");
             TakedCargo = cargo;
+            TakedCargo.ChangeStatus(CargoStatus.OnHands);
             TakeCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} successfully took the cargo {cargo.Id}", true));
         }
         public bool TryTake(ICargo cargo)
         {
-            if (TakedCargo is null)
+            if (TakedCargo is null && cargo.Status != CargoStatus.OnHands)
             {
                 Take(cargo);
                 return true;
@@ -33,6 +35,7 @@ namespace Cargolator.API.Base.AbstractClasses
         }
         public void DropCargo()
         {
+            TakedCargo.ChangeStatus(CargoStatus.Wait);
             TakedCargo = null;
             DropCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} successfully drop his cargo.", true));
         }

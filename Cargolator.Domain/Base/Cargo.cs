@@ -1,4 +1,5 @@
-﻿using Cargolator.API.Base.Interfaces;
+﻿using Cargolator.API.Base.Enums;
+using Cargolator.API.Base.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +16,14 @@ namespace Cargolator.API.Base
 
         public int Width { get; set; }
 
+        public CargoStatus Status { get; private set; }
+
         public Cargo(int id, int length, int width)
         {
             Id = id;
             Length = length;
             Width = width;
+            Status = CargoStatus.Wait;
         }
         public override bool Equals(object obj)
         {
@@ -29,6 +33,10 @@ namespace Cargolator.API.Base
                 return Id.Equals(temp.Id) && Length.Equals(temp.Length) && Width.Equals(temp.Width);
             }
             return false;
+        }
+        public void ChangeStatus(CargoStatus newStatus)
+        {
+            Status = newStatus;
         }
     }
 }

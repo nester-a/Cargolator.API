@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Cargolator.API.Base.Interfaces
 {
-    public interface ICargo : ISizeable
+    public interface ICargo : ISizeable, ICargoStatus
     {
         int Id { get; }
     }

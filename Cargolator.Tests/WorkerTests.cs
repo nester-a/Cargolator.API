@@ -1,5 +1,6 @@
 ﻿using Cargolator.API.Base;
 using Cargolator.API.Base.AbstractClasses;
+using Cargolator.API.Base.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,13 +22,13 @@ namespace Cargolator.Tests
             // Act
             wrk.Take(crg);
 
-            bool result = wrk.TakedCargo is not null && ReferenceEquals(wrk.TakedCargo, crg);
+            bool result = wrk.TakedCargo is not null && ReferenceEquals(wrk.TakedCargo, crg) && crg.Status == CargoStatus.OnHands;
 
             // Assert
             Assert.True(result);
         }
         [Fact]
-        public void TryTakeFalseTest()
+        public void TryTakeTakedCargoInNotNullFalseTest()
         {
             // Arrange
             Worker wrk = new Loader();

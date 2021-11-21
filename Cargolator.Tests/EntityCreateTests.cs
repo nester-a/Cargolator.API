@@ -22,7 +22,7 @@ namespace Cargolator.Tests
             // Act
             Cargo crg = new Cargo(id, y, x);
 
-            bool result = crg is not null && crg.Id == 0 && crg.Length == 20 && crg.Width == 20;
+            bool result = crg is not null && crg.Id == 0 && crg.Length == 20 && crg.Width == 20 && crg.Status == CargoStatus.Wait;
 
             // Assert
             Assert.True(result);
