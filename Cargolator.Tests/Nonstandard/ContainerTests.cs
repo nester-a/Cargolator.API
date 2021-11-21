@@ -20,7 +20,7 @@ namespace Cargolator.Tests
             Loader ldr = new Loader();
 
             // Act
-            Coordinates loadCoordinates = sv.FindLoadPlace(crg);
+            Coordinates loadCoordinates = sv.FindPlaceAndLoadOnIt(crg);
             if (loadCoordinates is not null)
             {
                 sv.LoadList.Add(crg.Id, loadCoordinates);
@@ -46,7 +46,7 @@ namespace Cargolator.Tests
             Unloader unldr = new Unloader();
 
             // Act
-            Coordinates loadCoordinates = sv.FindLoadPlace(crg);
+            Coordinates loadCoordinates = sv.FindPlaceAndLoadOnIt(crg);
             if (loadCoordinates is not null)
             {
                 sv.LoadList.Add(crg.Id, loadCoordinates);
@@ -75,7 +75,7 @@ namespace Cargolator.Tests
             Stock stck = new Stock();
 
             // Act
-            Coordinates loadCoordinates = sv.FindLoadPlace(crg);
+            Coordinates loadCoordinates = sv.FindPlaceAndLoadOnIt(crg);
             if (loadCoordinates is not null)
             {
                 sv.LoadList.Add(crg.Id, loadCoordinates);
@@ -94,7 +94,7 @@ namespace Cargolator.Tests
                 {
                     if (ldr.TryRotate())
                     {
-                        sv.LoadList.Add(crg.Id, sv.FindLoadPlace(ldr.TakedCargo));
+                        sv.LoadList.Add(crg.Id, sv.FindPlaceAndLoadOnIt(ldr.TakedCargo));
                     }
                 }
             }
@@ -119,7 +119,7 @@ namespace Cargolator.Tests
             // Act
             for (int i = 0; i < 3; i++)
             {
-                Coordinates loadCoordinates = sv.FindLoadPlace(crgList[i]);
+                Coordinates loadCoordinates = sv.FindPlaceAndLoadOnIt(crgList[i]);
                 if (loadCoordinates is not null)
                 {
                     sv.LoadList.Add(crgList[i].Id, loadCoordinates);

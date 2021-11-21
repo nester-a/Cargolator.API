@@ -16,7 +16,7 @@ namespace Cargolator.API.Base
         {
             ContainerMap = new string[container.Length, container.Width];
         }
-        public Coordinates FindLoadPlace(ICargo cargo)
+        public Coordinates FindPlaceAndLoadOnIt(ICargo cargo)
         {
             for (int i = 0; i < ContainerMap.GetLength(0); i++)
             {

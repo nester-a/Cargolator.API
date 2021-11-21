@@ -49,7 +49,7 @@ namespace Cargolator.Console
         {
             for (int i = 0; i < crgs.Count; i++)
             {
-                var coor = sv.FindLoadPlace(crgs[i]);
+                var coor = sv.FindPlaceAndLoadOnIt(crgs[i]);
                 if (coor is null) results.Add(false);
                 else results.Add(true);
                 SomeHelp();

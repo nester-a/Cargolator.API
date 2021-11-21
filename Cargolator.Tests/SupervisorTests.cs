@@ -19,7 +19,7 @@ namespace Cargolator.Tests
             Cargo crg = new Cargo(0, 5, 5);
 
             // Act
-            var result = sv.FindLoadPlace(crg);
+            var result = sv.FindPlaceAndLoadOnIt(crg);
             Coordinates exp = new Coordinates(new Point(0, 0), new Point(4, 4));
 
             // Assert
@@ -36,8 +36,8 @@ namespace Cargolator.Tests
             Cargo crg2 = new Cargo(0, 10, 10);
 
             // Act
-            sv.FindLoadPlace(crg1);
-            var result = sv.FindLoadPlace(crg2);
+            sv.FindPlaceAndLoadOnIt(crg1);
+            var result = sv.FindPlaceAndLoadOnIt(crg2);
 
             // Assert
             Assert.True(result is null);
@@ -70,7 +70,7 @@ namespace Cargolator.Tests
             Point p = new Point(0, 0);
 
             // Act
-            sv.FindLoadPlace(crg1);
+            sv.FindPlaceAndLoadOnIt(crg1);
             var result = sv.CheckSquare(p, crg2);
 
             // Assert
@@ -121,7 +121,7 @@ namespace Cargolator.Tests
             Cargo crg1 = new Cargo(0, 5, 5);
 
             // Act
-            sv.FindLoadPlace(crg1);
+            sv.FindPlaceAndLoadOnIt(crg1);
             var result = sv.EraseCargoFromMap(crg1);
 
             // Assert
