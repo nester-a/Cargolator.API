@@ -38,14 +38,12 @@ namespace Cargolator.API.Base
             TryTake(container.LoadedCargo.Pop());
             UnloadCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} successfully unload the cargo {TakedCargo.Id} from the container", true));
         }
-
         public void PlaceToStock(IStock stock)
         {
             stock.CargosStock.Enqueue(TakedCargo);
             PlaceToStockCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} successfully place the cargo {TakedCargo.Id} to stock", true));
             TryDropCargo();
         }
-
         public bool TryPlaceToStock(IStock stock)
         {
             if (TakedCargo is not null && stock is not null)
@@ -56,6 +54,5 @@ namespace Cargolator.API.Base
             PlaceToStockCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} cannot place the cargo. He doesn't have it.", false));
             return false;
         }
-        
     }
 }

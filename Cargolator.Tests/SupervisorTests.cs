@@ -121,7 +121,8 @@ namespace Cargolator.Tests
             Cargo crg1 = new Cargo(0, 5, 5);
 
             // Act
-            sv.FindPlaceAndLoadOnIt(crg1);
+            var coor = sv.FindPlaceAndLoadOnIt(crg1);
+            sv.LoadList.Add(crg1.Id, coor);
             var result = sv.EraseCargoFromMap(crg1);
 
             // Assert

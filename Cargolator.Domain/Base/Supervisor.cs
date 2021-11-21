@@ -26,7 +26,6 @@ namespace Cargolator.API.Base
                     {
                         Point startPoint = new Point(j, i);
                         Point endPoint = FillMap(startPoint, cargo);
-                        LoadList.Add(cargo.Id, new Coordinates(startPoint, endPoint));
                         return new Coordinates(startPoint, endPoint);
                     }
                     else continue;
