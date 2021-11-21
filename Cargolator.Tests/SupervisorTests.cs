@@ -1,6 +1,9 @@
-using Cargolator.API.Base;
+Ôªøusing Cargolator.API.Base;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Cargolator.Tests
@@ -8,114 +11,137 @@ namespace Cargolator.Tests
     public class SupervisorTests
     {
         [Fact]
-        public void FindLoadPlaceResult()
+        public void FindLoadPlaceNotNullTest()
         {
             // Arrange
-            Container cnt = new Container() { Length = 10, Width = 10 };
+            Container cnt = new Container(10, 10);
             Supervisor sv = new Supervisor(cnt);
-            Cargo crg = new Cargo() { Length = 4, Width = 2 };
+            Cargo crg = new Cargo(0, 5, 5);
 
             // Act
-            Coordinates result = sv.FindLoadPlace(crg);
-            Coordinates expected = new Coordinates(new Point(0, 0), new Point(1, 3));
-            var actual = result.Equals(expected);
+            var result = sv.FindPlaceAndLoadOnIt(crg);
+            Coordinates exp = new Coordinates(new Point(0, 0), new Point(4, 4));
 
             // Assert
-            Assert.True(actual);
+            Assert.Equal<Coordinates>(exp, result);
         }
 
         [Fact]
-        public void EraseCargoFromMapResult()
+        public void FindLoadPlaceNullTest()
         {
             // Arrange
-            Container cnt = new Container() { Length = 10, Width = 10 };
+            Container cnt = new Container(10, 10);
             Supervisor sv = new Supervisor(cnt);
-            Cargo crg = new Cargo() { Length = 4, Width = 2 };
+            Cargo crg1 = new Cargo(0, 10, 10);
+            Cargo crg2 = new Cargo(0, 10, 10);
 
             // Act
-            sv.LoadList.Add(crg.Id, sv.FindPlace(crg));
-            bool result = sv.EraceCargoFromMap(crg);
+            sv.FindPlaceAndLoadOnIt(crg1);
+            var result = sv.FindPlaceAndLoadOnIt(crg2);
+
+            // Assert
+            Assert.True(result is null);
+        }
+
+        [Fact]
+        public void CheckSquareTrueTest()
+        {
+            // Arrange
+            Container cnt = new Container(10, 10);
+            Supervisor sv = new Supervisor(cnt);
+            Cargo crg = new Cargo(0, 5, 5);
+            Point p = new Point(0, 0);
+
+            // Act
+            var result = sv.CheckSquare(p, crg);
 
             // Assert
             Assert.True(result);
         }
 
         [Fact]
-        public void CheckSquareTest()
+        public void CheckSquareFalseTest()
         {
             // Arrange
-            Container cnt = new Container() { Length = 10, Width = 10 };
+            Container cnt = new Container(10, 10);
             Supervisor sv = new Supervisor(cnt);
-            Cargo crg = new Cargo() { Length = 4, Width = 2 };
-            Cargo crg2 = new Cargo() { Length = 2, Width = 2 };
+            Cargo crg1 = new Cargo(0, 5, 5);
+            Cargo crg2 = new Cargo(1, 3, 5);
+            Point p = new Point(0, 0);
 
             // Act
-            sv.LoadList.Add(crg.Id, sv.FindPlace(crg));
-            var result = sv.CheckSquare(new Point(1, 1), crg2);
+            sv.FindPlaceAndLoadOnIt(crg1);
+            var result = sv.CheckSquare(p, crg2);
 
             // Assert
             Assert.True(!result);
         }
 
         [Fact]
-        public void FillMapTest()
+        public void FillMapNotNullTest()
         {
             // Arrange
-            Container cnt = new Container() { Length = 10, Width = 10 };
+            Container cnt = new Container(10, 10);
             Supervisor sv = new Supervisor(cnt);
-            Cargo crg = new Cargo() { Length = 4, Width = 2, Id = 1 };
-            Cargo crg2 = new Cargo() { Length = 2, Width = 4, Id = 2 };
+            Cargo crg1 = new Cargo(0, 5, 5);
+            Point start = new Point(0, 0);
+            Point expected = new Point(4, 4);
 
             // Act
-            sv.LoadList.Add(crg.Id, sv.FindLoadPlace(crg));
-            var result = sv.FillMap(new Point(0, 4), crg2);
+            var result = sv.FillMap(start, crg1);
 
             // Assert
-            // Á‡„ÎÛ¯Í‡
-            Assert.True(true);
+            Assert.Equal<Point>(expected, result);
         }
 
         [Fact]
-        public void FindNewPlace()
+        public void FillMapNullTest()
         {
             // Arrange
-            Container cnt = new Container() { Length = 10, Width = 10 };
+            Container cnt = new Container(4, 4);
             Supervisor sv = new Supervisor(cnt);
-            List<Cargo> crgs = new List<Cargo>()
-            {
-                new Cargo() { Length = 3, Width = 3, Id = 1 },
-                new Cargo() { Length = 2, Width = 4, Id = 2 },
-                new Cargo() { Length = 3, Width = 3, Id = 3 },
-                new Cargo() { Length = 5, Width = 6, Id = 4 },
-                new Cargo() { Length = 1, Width = 4, Id = 5 },
-                new Cargo() { Length = 2, Width = 2, Id = 6 },
-                new Cargo() { Length = 2, Width = 2, Id = 7 },
-                new Cargo() { Length = 2, Width = 2, Id = 8 },
-                new Cargo() { Length = 2, Width = 2, Id = 9 },
+            Cargo crg1 = new Cargo(0, 5, 5);
+            Point start = new Point(0, 0);
 
-            };
-            List<bool> results = new List<bool>();
+            // Act
+            var end = sv.FillMap(start, crg1);
 
-            //Act
+            bool result = end is null;
 
-            for (int i = 0; i < crgs.Count; i++)
-            {
-                var coor = sv.FindPlace(crgs[i]);
-                if (coor is null) results.Add(false);
-                else results.Add(true);
-            }
+            // Assert
+            Assert.True(result);
+        }
 
+        [Fact]
+        public void EraseCargoFromMapTrueTest()
+        {
+            // Arrange
+            Container cnt = new Container(6, 6);
+            Supervisor sv = new Supervisor(cnt);
+            Cargo crg1 = new Cargo(0, 5, 5);
 
-            bool AllAreTrue()
-            {
-                for (int i = 0; i < results.Count; i++)
-                {
-                    if (results[i] == false) return false;
-                }
-                return true;
-            }
-            //Assert
-            Assert.True(AllAreTrue());
+            // Act
+            var coor = sv.FindPlaceAndLoadOnIt(crg1);
+            sv.LoadList.Add(crg1.Id, coor);
+            var result = sv.EraseCargoFromMap(crg1);
+
+            // Assert
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void EraseCargoFromMapFalse()
+        {
+            // Arrange
+            Container cnt = new Container(6, 6);
+            Supervisor sv = new Supervisor(cnt);
+            Cargo crg1 = new Cargo(0, 5, 5);
+
+            // Act
+            var result = sv.EraseCargoFromMap(crg1);
+
+            // Assert
+            Assert.True(!result);
         }
     }
 }

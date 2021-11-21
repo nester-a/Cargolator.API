@@ -14,13 +14,13 @@ namespace Cargolator.Tests
         public void LoadContainerResult()
         {
             // Arrange
-            Container cnt = new Container() { Length = 10, Width = 10 };
+            Container cnt = new Container(10, 10);
             Supervisor sv = new Supervisor(cnt);
-            Cargo crg = new Cargo() { Length = 4, Width = 2 };
+            Cargo crg = new Cargo(0, 4, 2);
             Loader ldr = new Loader();
 
             // Act
-            Coordinates loadCoordinates = sv.FindPlace(crg);
+            Coordinates loadCoordinates = sv.FindPlaceAndLoadOnIt(crg);
             if (loadCoordinates is not null)
             {
                 sv.LoadList.Add(crg.Id, loadCoordinates);
@@ -39,14 +39,14 @@ namespace Cargolator.Tests
         public void UnloadContainerResult()
         {
             // Arrange
-            Container cnt = new Container() { Length = 10, Width = 10 };
+            Container cnt = new Container(10, 10);
             Supervisor sv = new Supervisor(cnt);
-            Cargo crg = new Cargo() { Length = 4, Width = 2 };
+            Cargo crg = new Cargo(0, 4, 2);
             Loader ldr = new Loader();
             Unloader unldr = new Unloader();
 
             // Act
-            Coordinates loadCoordinates = sv.FindLoadPlace(crg);
+            Coordinates loadCoordinates = sv.FindPlaceAndLoadOnIt(crg);
             if (loadCoordinates is not null)
             {
                 sv.LoadList.Add(crg.Id, loadCoordinates);
@@ -57,7 +57,7 @@ namespace Cargolator.Tests
                 }
             }
             if (unldr.TryUnload(cnt))
-                sv.EraceCargoFromMap(unldr.TakedCargo);
+                sv.EraseCargoFromMap(unldr.TakedCargo);
 
             // Assert
             Assert.True(!cnt.LoadedCargo.Contains(crg));
@@ -67,15 +67,15 @@ namespace Cargolator.Tests
         public void LoadUnloadRotateLoadContainerResult()
         {
             // Arrange
-            Container cnt = new Container() { Length = 10, Width = 10 };
+            Container cnt = new Container(10, 10);
             Supervisor sv = new Supervisor(cnt);
-            Cargo crg = new Cargo() { Length = 4, Width = 2 };
+            Cargo crg = new Cargo(0, 4, 2);
             Loader ldr = new Loader();
             Unloader unldr = new Unloader();
             Stock stck = new Stock();
 
             // Act
-            Coordinates loadCoordinates = sv.FindPlace(crg);
+            Coordinates loadCoordinates = sv.FindPlaceAndLoadOnIt(crg);
             if (loadCoordinates is not null)
             {
                 sv.LoadList.Add(crg.Id, loadCoordinates);
@@ -86,7 +86,7 @@ namespace Cargolator.Tests
                 }
             }
             if (unldr.TryUnload(cnt))
-                sv.EraceCargoFromMap(unldr.TakedCargo);
+                sv.EraseCargoFromMap(unldr.TakedCargo);
 
             if (unldr.TryPlaceToStock(stck))
             {
@@ -94,7 +94,7 @@ namespace Cargolator.Tests
                 {
                     if (ldr.TryRotate())
                     {
-                        sv.LoadList.Add(crg.Id, sv.FindPlace(ldr.TakedCargo));
+                        sv.LoadList.Add(crg.Id, sv.FindPlaceAndLoadOnIt(ldr.TakedCargo));
                     }
                 }
             }
@@ -107,19 +107,19 @@ namespace Cargolator.Tests
         public void LoadFewGoodsResult()
         {
             // Arrange
-            Container cnt = new Container() { Length = 10, Width = 10 };
+            Container cnt = new Container(10, 10);
             Supervisor sv = new Supervisor(cnt);
             List<Cargo> crgList = new List<Cargo>() {
-                new Cargo() { Id = 1, Length = 4, Width = 2 },
-                new Cargo() { Id = 2, Length = 3, Width = 3 },
-                new Cargo() { Id = 3, Length = 5, Width = 5 },
+                new Cargo(1, 4, 2),
+                new Cargo(2, 3, 3),
+                new Cargo(3, 5, 5),
             };
             Loader ldr = new Loader();
 
             // Act
             for (int i = 0; i < 3; i++)
             {
-                Coordinates loadCoordinates = sv.FindPlace(crgList[i]);
+                Coordinates loadCoordinates = sv.FindPlaceAndLoadOnIt(crgList[i]);
                 if (loadCoordinates is not null)
                 {
                     sv.LoadList.Add(crgList[i].Id, loadCoordinates);

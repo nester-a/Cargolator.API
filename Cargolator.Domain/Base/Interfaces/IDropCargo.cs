@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Cargolator.API.Base.Interfaces
 {
-    public interface ICargo : ISizeable, ICargoStatus
+    public interface IDropCargo : ITakeCargo
     {
-        int Id { get; }
+        void DropCargo();
+        bool TryDropCargo();
     }
 }

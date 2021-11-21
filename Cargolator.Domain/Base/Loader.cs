@@ -23,7 +23,7 @@ namespace Cargolator.API.Base
         {
             container.LoadedCargo.Push(TakedCargo);
             LoadCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} successfully load the cargo {TakedCargo.Id} to the container.", true));
-            TryDropCargo();
+            TryDropCargo(CargoStatus.InContainer);
         }
 
         public bool TryLoad(ILoadable container)
@@ -47,6 +47,7 @@ namespace Cargolator.API.Base
             int tmp = TakedCargo.Length;
             TakedCargo.Length = TakedCargo.Width;
             TakedCargo.Width = tmp;
+            RotateCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} rotate the cargo {TakedCargo.Id}.", true));
         }
         public bool TryRotate()
         {
@@ -55,12 +56,14 @@ namespace Cargolator.API.Base
                 Rotate();
                 return true;
             }
+            RotateCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} cannot rotate the cargo {TakedCargo.Id}.", false));
             return false;
         }
 
         public void TakeFromStock(IStock stock)
         {
-            TryTake(stock.CargosStock.Dequeue());
+            Take(stock.CargosStock.Dequeue());
+            TakeFromStockCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} successfully take the cargo {TakedCargo.Id} from stock.", true));
         }
 
         public bool TryTakeFromStock(IStock stock)
@@ -70,6 +73,7 @@ namespace Cargolator.API.Base
                 TakeFromStock(stock);
                 return true;
             }
+            TakeFromStockCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} cannot take the cargo {TakedCargo.Id} from stock.", false));
             return false;
         }
     }

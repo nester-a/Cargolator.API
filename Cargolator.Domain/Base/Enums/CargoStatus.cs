@@ -4,10 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cargolator.API.Base.Interfaces
+namespace Cargolator.API.Base.Enums
 {
-    public interface ICargo : ISizeable, ICargoStatus
+    public enum CargoStatus
     {
-        int Id { get; }
+        Wait,
+        OnHands,
+        OnStock,
+        InContainer
     }
 }

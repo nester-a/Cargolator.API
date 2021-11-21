@@ -11,6 +11,6 @@ namespace Cargolator.API.Base.Interfaces
     {
         string[,] ContainerMap { get; set; }
         Dictionary<int, ICoordinates> LoadList { get; set; }
-        Coordinates FindLoadPlace(ICargo cargoForLoad);
+        Coordinates FindPlaceAndLoadOnIt(ICargo cargoForLoad);
     }
 }
