@@ -44,7 +44,7 @@ namespace Cargolator.Tests
             {
                 if (ldr.TryTakeFromStock(stck))
                 {
-                    Coordinates coor = sv.FindPlace(ldr.TakedCargo);
+                    Coordinates coor = sv.FindLoadPlace(ldr.TakedCargo);
                     if (coor is not null)
                     {
                         sv.LoadList.Add(ldr.TakedCargo.Id, coor);
@@ -55,7 +55,7 @@ namespace Cargolator.Tests
                     {
                         if (ldr.TryRotate())
                         {
-                            Coordinates coor2 = sv.FindPlace(ldr.TakedCargo);
+                            Coordinates coor2 = sv.FindLoadPlace(ldr.TakedCargo);
                             if (coor2 is not null)
                             {
                                 sv.LoadList.Add(ldr.TakedCargo.Id, coor2);

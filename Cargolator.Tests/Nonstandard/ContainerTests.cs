@@ -20,7 +20,7 @@ namespace Cargolator.Tests
             Loader ldr = new Loader();
 
             // Act
-            Coordinates loadCoordinates = sv.FindPlace(crg);
+            Coordinates loadCoordinates = sv.FindLoadPlace(crg);
             if (loadCoordinates is not null)
             {
                 sv.LoadList.Add(crg.Id, loadCoordinates);
@@ -57,7 +57,7 @@ namespace Cargolator.Tests
                 }
             }
             if (unldr.TryUnload(cnt))
-                sv.EraceCargoFromMap(unldr.TakedCargo);
+                sv.EraseCargoFromMap(unldr.TakedCargo);
 
             // Assert
             Assert.True(!cnt.LoadedCargo.Contains(crg));
@@ -75,7 +75,7 @@ namespace Cargolator.Tests
             Stock stck = new Stock();
 
             // Act
-            Coordinates loadCoordinates = sv.FindPlace(crg);
+            Coordinates loadCoordinates = sv.FindLoadPlace(crg);
             if (loadCoordinates is not null)
             {
                 sv.LoadList.Add(crg.Id, loadCoordinates);
@@ -86,7 +86,7 @@ namespace Cargolator.Tests
                 }
             }
             if (unldr.TryUnload(cnt))
-                sv.EraceCargoFromMap(unldr.TakedCargo);
+                sv.EraseCargoFromMap(unldr.TakedCargo);
 
             if (unldr.TryPlaceToStock(stck))
             {
@@ -94,7 +94,7 @@ namespace Cargolator.Tests
                 {
                     if (ldr.TryRotate())
                     {
-                        sv.LoadList.Add(crg.Id, sv.FindPlace(ldr.TakedCargo));
+                        sv.LoadList.Add(crg.Id, sv.FindLoadPlace(ldr.TakedCargo));
                     }
                 }
             }
@@ -119,7 +119,7 @@ namespace Cargolator.Tests
             // Act
             for (int i = 0; i < 3; i++)
             {
-                Coordinates loadCoordinates = sv.FindPlace(crgList[i]);
+                Coordinates loadCoordinates = sv.FindLoadPlace(crgList[i]);
                 if (loadCoordinates is not null)
                 {
                     sv.LoadList.Add(crgList[i].Id, loadCoordinates);
