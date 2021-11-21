@@ -44,6 +44,21 @@ namespace Cargolator.Tests
             Assert.True(!result);
         }
         [Fact]
+        public void TryTakeCargoStatusOnHandsFalseTest()
+        {
+            // Arrange
+            Worker wrk = new Loader();
+            Cargo crg = new Cargo(0, 2, 2);
+
+            // Act
+            crg.ChangeStatus(CargoStatus.OnHands);
+
+            bool result = wrk.TryTake(crg);
+
+            // Assert
+            Assert.True(!result);
+        }
+        [Fact]
         public void TryTakeTrueTest()
         {
             // Arrange
@@ -67,11 +82,44 @@ namespace Cargolator.Tests
             wrk.Take(crg);
             wrk.DropCargo();
 
-            bool result = wrk.TakedCargo is null;
+            bool result = wrk.TakedCargo is null && crg.Status == CargoStatus.Wait;
 
             // Assert
             Assert.True(result);
         }
+        [Fact]
+        public void DropCargoWithInConatinerStatusParamTest()
+        {
+            // Arrange
+            Worker wrk = new Loader();
+            Cargo crg = new Cargo(0, 2, 2);
+
+            // Act
+            wrk.Take(crg);
+            wrk.DropCargo(CargoStatus.InContainer);
+
+            bool result = wrk.TakedCargo is null && crg.Status == CargoStatus.InContainer;
+
+            // Assert
+            Assert.True(result);
+        }
+        [Fact]
+        public void DropCargoWithOnStockStatusParamTest()
+        {
+            // Arrange
+            Worker wrk = new Loader();
+            Cargo crg = new Cargo(0, 2, 2);
+
+            // Act
+            wrk.Take(crg);
+            wrk.DropCargo(CargoStatus.OnStock);
+
+            bool result = wrk.TakedCargo is null && crg.Status == CargoStatus.OnStock;
+
+            // Assert
+            Assert.True(result);
+        }
+
         [Fact]
         public void TryDropCargoFalseTest()
         {
@@ -117,7 +165,7 @@ namespace Cargolator.Tests
             Assert.True(result);
         }
         [Fact]
-        public void TryTakeFromWorkerFalseTest()
+        public void TryTakeFromWorkerThisWorkerTakedCargoIsNotNullFalseTest()
         {
             // Arrange
             Worker wrk1 = new Loader();
@@ -129,10 +177,38 @@ namespace Cargolator.Tests
             wrk1.Take(crg);
             wrk2.Take(crg2);
 
-            bool result = !wrk2.TryTakeFromWorker(wrk1) && wrk2.TakedCargo.Equals(crg2) && wrk1.TakedCargo.Equals(crg);
+            bool result = wrk2.TryTakeFromWorker(wrk1);
 
             // Assert
-            Assert.True(result);
+            Assert.True(!result);
+        }
+        [Fact]
+        public void TryTakeFromWorkerWorkerTakedCargoIsNullFalseTest()
+        {
+            // Arrange
+            Worker wrk1 = new Loader();
+            Worker wrk2 = new Loader();
+
+            // Act
+
+            bool result = wrk1.TryTakeFromWorker(wrk2);
+
+            // Assert
+            Assert.True(!result);
+        }
+        [Fact]
+        public void TryTakeFromWorkerWorkerIsNullFalseTest()
+        {
+            // Arrange
+            Worker wrk1 = new Loader();
+            Worker wrk2 = null;
+
+            // Act
+
+            bool result = wrk1.TryTakeFromWorker(wrk2);
+
+            // Assert
+            Assert.True(!result);
         }
         [Fact]
         public void TakeFromWorkerTrueTest()

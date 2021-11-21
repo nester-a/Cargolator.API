@@ -39,6 +39,13 @@ namespace Cargolator.API.Base.AbstractClasses
             TakedCargo = null;
             DropCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} successfully drop his cargo.", true));
         }
+        public void DropCargo(CargoStatus dropedCargoStatus)
+        {
+            if (dropedCargoStatus == CargoStatus.OnHands) throw new ArgumentException("Droped cargo status cannot be OnHands");
+            TakedCargo.ChangeStatus(dropedCargoStatus);
+            TakedCargo = null;
+            DropCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} successfully drop his cargo.", true));
+        }
         public bool TryDropCargo()
         {
             if (TakedCargo is not null)
@@ -49,15 +56,26 @@ namespace Cargolator.API.Base.AbstractClasses
             DropCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} cannot drop his cargo. He doesn't have it.", false));
             return false;
         }
+        public bool TryDropCargo(CargoStatus dropedCargoStatus)
+        {
+            if (TakedCargo is not null && dropedCargoStatus != CargoStatus.OnHands)
+            {
+                DropCargo(dropedCargoStatus);
+                return true;
+            }
+            DropCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} cannot drop his cargo. He doesn't have it.", false));
+            return false;
+        }
         public void TakeFromWorker(ITakeFromWorker worker)
         {
-            this.TryTake(worker.TakedCargo);
+            worker.TakedCargo.ChangeStatus(CargoStatus.Wait);
+            TryTake(worker.TakedCargo);
             worker.TryDropCargo();
             TakeCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} successfully took the cargo {TakedCargo.Id} from other worker ({nameof(worker.ThisWorkerType)})", true));
         }
         public bool TryTakeFromWorker(ITakeFromWorker worker)
         {
-            if(worker is not null && worker.TakedCargo is not null && this.TakedCargo is null)
+            if(worker is not null && worker.TakedCargo is not null && TakedCargo is null)
             {
                 TakeFromWorker(worker);
                 return true;

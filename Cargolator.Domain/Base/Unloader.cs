@@ -42,7 +42,7 @@ namespace Cargolator.API.Base
         {
             stock.CargosStock.Enqueue(TakedCargo);
             PlaceToStockCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} successfully place the cargo {TakedCargo.Id} to stock", true));
-            TryDropCargo();
+            TryDropCargo(CargoStatus.OnStock);
         }
         public bool TryPlaceToStock(IStock stock)
         {

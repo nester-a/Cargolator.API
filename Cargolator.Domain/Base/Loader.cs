@@ -23,7 +23,7 @@ namespace Cargolator.API.Base
         {
             container.LoadedCargo.Push(TakedCargo);
             LoadCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} successfully load the cargo {TakedCargo.Id} to the container.", true));
-            TryDropCargo();
+            TryDropCargo(CargoStatus.InContainer);
         }
 
         public bool TryLoad(ILoadable container)
