@@ -142,6 +142,7 @@ namespace Cargolator.Tests
             // Assert
             Assert.True(result);
         }
+
         [Fact]
         public void TryTakeFromStockFalseTest()
         {
