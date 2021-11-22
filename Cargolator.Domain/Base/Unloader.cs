@@ -20,12 +20,12 @@ namespace Cargolator.API.Base
         }
         public bool TryUnload(ILoadable container)
         {
-            if(TakedCargo is null && container.LoadedCargo.Count > 0)
+            if(TakedCargo is null && container.GetCount() > 0)
             {
                 Unload(container);
                 return true;
             }
-            if (container.LoadedCargo.Count <= 0)
+            if (container.GetCount() <= 0)
             {
                 UnloadCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} cannot unload any cargo from this container. It's empty", false));
                 return false;
@@ -35,12 +35,12 @@ namespace Cargolator.API.Base
         }
         public void Unload(ILoadable container)
         {
-            TryTake(container.LoadedCargo.Pop());
+            TryTake(container.RemoveCargo());
             UnloadCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} successfully unload the cargo {TakedCargo.Id} from the container", true));
         }
         public void PlaceToStock(IStock stock)
         {
-            stock.CargosStock.Enqueue(TakedCargo);
+            stock.AddCargo(TakedCargo);
             PlaceToStockCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} successfully place the cargo {TakedCargo.Id} to stock", true));
             TryDropCargo(CargoStatus.OnStock);
         }
