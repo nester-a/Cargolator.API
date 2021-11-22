@@ -149,7 +149,7 @@ namespace Cargolator.Tests
             stck.AddCargo(crg);
             ldr.TakeFromStock(stck);
 
-            bool result = stck.CargosStock.Count == 0 && ldr.TakedCargo.Equals(crg) && crg.Status == CargoStatus.OnHands;
+            bool result = stck.GetCount() == 0 && ldr.TakedCargo.Equals(crg) && crg.Status == CargoStatus.OnHands;
 
             // Assert
             Assert.True(result);

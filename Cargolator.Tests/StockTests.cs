@@ -1,4 +1,5 @@
 ﻿using Cargolator.API.Base;
+using Cargolator.API.Base.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace Cargolator.Tests
             // Act
             stck.AddCargo(crg);
 
-            bool result = stck.CargosStock.Count == 1 && stck.CargosStock.Contains(crg);
+            bool result = stck.GetCount() == 1 && stck.CargosStock.Contains(crg) && crg.Status == CargoStatus.OnStock;
 
             // Assert
             Assert.True(result);
@@ -37,7 +38,7 @@ namespace Cargolator.Tests
             // Act
             stck.AddRangeCargo(crg1, crg2);
 
-            bool result = stck.CargosStock.Count == 2 && stck.CargosStock.Contains(crg1) && stck.CargosStock.Contains(crg2);
+            bool result = stck.GetCount() == 2 && stck.CargosStock.Contains(crg1) && stck.CargosStock.Contains(crg2);
 
             // Assert
             Assert.True(result);
@@ -57,7 +58,7 @@ namespace Cargolator.Tests
             // Act
             stck.AddRangeCargo(crgs);
 
-            bool result = stck.CargosStock.Count == 2 && stck.CargosStock.Contains(new Cargo(0, 1, 1)) && stck.CargosStock.Contains(new Cargo(1, 2, 2));
+            bool result = stck.GetCount() == 2 && stck.CargosStock.Contains(new Cargo(0, 1, 1)) && stck.CargosStock.Contains(new Cargo(1, 2, 2));
 
             // Assert
             Assert.True(result);
@@ -76,5 +77,23 @@ namespace Cargolator.Tests
             // Assert
             Assert.Equal(1, stck.GetCount());
         }
+        [Fact]
+        public void RemoveCargoTest()
+        {
+            // Arrange
+            Stock stck = new Stock();
+            Cargo crg = new Cargo(0, 1, 1);
+            Loader ldr = new Loader();
+
+            // Act
+            stck.AddCargo(crg);
+            ldr.TakeFromStock(stck);
+
+            bool result = stck.GetCount() == 0 && ldr.TakedCargo.Equals(crg) && crg.Status == CargoStatus.OnHands;
+
+            // Assert
+            Assert.True(result);
+        }
+
     }
 }
