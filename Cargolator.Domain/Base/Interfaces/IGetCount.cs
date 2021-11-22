@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Cargolator.API.Base.Interfaces
 {
-    public interface ILoadable : ISizeable, IGetCount
+    public interface IGetCount
     {
-        Stack<ICargo> LoadedCargo { get; }
+        int GetCount();
     }
 }

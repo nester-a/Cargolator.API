@@ -10,7 +10,7 @@ namespace Cargolator.API.Base
 {
     public class Stock : IStock
     {
-        public Queue<ICargo> CargosStock { get; set; } = new Queue<ICargo>();
+        public Queue<ICargo> CargosStock { get; private set; } = new Queue<ICargo>();
 
         public void AddOnStock(ICargo cargo)
         {
@@ -32,6 +32,11 @@ namespace Cargolator.API.Base
             {
                 AddOnStock(cargo);
             }
+        }
+
+        public int GetCount()
+        {
+            return CargosStock.Count;
         }
 
         public ICargo RemoveFromStock()
