@@ -121,7 +121,7 @@ namespace Cargolator.Tests
         }
 
         [Fact]
-        public void TryDropCargoFalseTest()
+        public void TryDropCargoTakedCargoIsNullFalseTest()
         {
             // Arrange
             Worker wrk = new Loader();
@@ -133,6 +133,50 @@ namespace Cargolator.Tests
             Assert.True(!result);
         }
         [Fact]
+        public void TryDropCargoWithInHandsStatusParamFalseTest()
+        {
+            // Arrange
+            Worker wrk = new Loader();
+            Cargo crg = new Cargo(0, 1, 1);
+
+            // Act
+            wrk.Take(crg);
+            bool result = wrk.TryDropCargo(CargoStatus.OnHands);
+
+            // Assert
+            Assert.True(!result);
+        }
+        [Fact]
+        public void TryDropCargoWithInConatinerStatusParamTrueTest()
+        {
+            // Arrange
+            Worker wrk = new Loader();
+            Cargo crg = new Cargo(0, 2, 2);
+
+            // Act
+            wrk.Take(crg);
+
+            bool result = wrk.TryDropCargo(CargoStatus.InContainer) && wrk.TakedCargo is null && crg.Status == CargoStatus.InContainer;
+
+            // Assert
+            Assert.True(result);
+        }
+        [Fact]
+        public void TryDropCargoWithOnStockStatusParamTrueTest()
+        {
+            // Arrange
+            Worker wrk = new Loader();
+            Cargo crg = new Cargo(0, 2, 2);
+
+            // Act
+            wrk.Take(crg);
+
+            bool result = wrk.TryDropCargo(CargoStatus.OnStock) && wrk.TakedCargo is null && crg.Status == CargoStatus.OnStock;
+
+            // Assert
+            Assert.True(result);
+        }
+        [Fact]
         public void TryDropCargoTrueTest()
         {
             // Arrange
@@ -142,7 +186,7 @@ namespace Cargolator.Tests
             // Act
             wrk.Take(crg);
 
-            bool result = wrk.TryDropCargo() && wrk.TakedCargo is null;
+            bool result = wrk.TryDropCargo() && wrk.TakedCargo is null && crg.Status == CargoStatus.Wait;
 
             // Assert
             Assert.True(result);
@@ -159,7 +203,7 @@ namespace Cargolator.Tests
             wrk1.Take(crg);
             wrk2.TakeFromWorker(wrk1);
 
-            bool result = wrk2.TakedCargo.Equals(crg) && wrk1.TakedCargo is null;
+            bool result = wrk2.TakedCargo.Equals(crg) && wrk1.TakedCargo is null && crg.Status == CargoStatus.OnHands;
 
             // Assert
             Assert.True(result);

@@ -71,6 +71,7 @@ namespace Cargolator.API.Base.AbstractClasses
             worker.TakedCargo.ChangeStatus(CargoStatus.Wait);
             TryTake(worker.TakedCargo);
             worker.TryDropCargo();
+            TakedCargo.ChangeStatus(CargoStatus.OnHands);
             TakeCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} successfully took the cargo {TakedCargo.Id} from other worker ({nameof(worker.ThisWorkerType)})", true));
         }
         public bool TryTakeFromWorker(ITakeFromWorker worker)
