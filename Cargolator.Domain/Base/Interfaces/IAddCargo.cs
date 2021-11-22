@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Cargolator.API.Base.Interfaces
 {
-    public interface IRemoveFromStock
+    public interface IAddCargo
     {
-
-        ICargo RemoveFromStock();
-        bool TryRemoveFromStock(out ICargo cargo);
+        void AddRangeCargo(params ICargo[] cargos);
+        void AddCargo(ICargo cargo);
+        void AddRangeCargo(ICollection<Cargo> cargos);
     }
 }

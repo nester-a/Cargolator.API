@@ -37,7 +37,7 @@ namespace Cargolator.Tests
             crgs.Sort((o, e) => (e.Length * e.Width).CompareTo(o.Width * o.Length));
 
             // Add cargos to stock
-            stck.AddRangeOnStock(crgs);
+            stck.AddRangeCargo(crgs);
 
             // Start work
             for (int i = 0; i < crgs.Count; i++)

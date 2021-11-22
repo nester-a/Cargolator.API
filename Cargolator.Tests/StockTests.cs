@@ -18,7 +18,7 @@ namespace Cargolator.Tests
             Cargo crg = new Cargo(0, 1, 1);
 
             // Act
-            stck.AddOnStock(crg);
+            stck.AddCargo(crg);
 
             bool result = stck.CargosStock.Count == 1 && stck.CargosStock.Contains(crg);
 
@@ -35,7 +35,7 @@ namespace Cargolator.Tests
             Cargo crg2 = new Cargo(1, 2, 2);
 
             // Act
-            stck.AddRangeOnStock(crg1, crg2);
+            stck.AddRangeCargo(crg1, crg2);
 
             bool result = stck.CargosStock.Count == 2 && stck.CargosStock.Contains(crg1) && stck.CargosStock.Contains(crg2);
 
@@ -55,12 +55,26 @@ namespace Cargolator.Tests
             };
 
             // Act
-            stck.AddRangeOnStock(crgs);
+            stck.AddRangeCargo(crgs);
 
             bool result = stck.CargosStock.Count == 2 && stck.CargosStock.Contains(new Cargo(0, 1, 1)) && stck.CargosStock.Contains(new Cargo(1, 2, 2));
 
             // Assert
             Assert.True(result);
+        }
+
+        [Fact]
+        public void GetCountTest()
+        {
+            // Arrange
+            Stock stck = new Stock();
+            Cargo crg = new Cargo(0, 1, 1);
+
+            // Act
+            stck.AddCargo(crg);
+
+            // Assert
+            Assert.Equal(1, stck.GetCount());
         }
     }
 }

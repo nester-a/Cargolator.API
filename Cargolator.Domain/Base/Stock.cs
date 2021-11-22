@@ -12,25 +12,25 @@ namespace Cargolator.API.Base
     {
         public Queue<ICargo> CargosStock { get; private set; } = new Queue<ICargo>();
 
-        public void AddOnStock(ICargo cargo)
+        public void AddCargo(ICargo cargo)
         {
             if (cargo.Status != CargoStatus.OnStock) cargo.ChangeStatus(CargoStatus.OnStock);
             CargosStock.Enqueue(cargo);
         }
 
-        public void AddRangeOnStock(params ICargo[] cargos)
+        public void AddRangeCargo(params ICargo[] cargos)
         {
             for (int i = 0; i < cargos.Length; i++)
             {
-                AddOnStock(cargos[i]);
+                AddCargo(cargos[i]);
             }
         }
 
-        public void AddRangeOnStock(ICollection<Cargo> cargos)
+        public void AddRangeCargo(ICollection<Cargo> cargos)
         {
             foreach (var cargo in cargos)
             {
-                AddOnStock(cargo);
+                AddCargo(cargo);
             }
         }
 
@@ -39,16 +39,16 @@ namespace Cargolator.API.Base
             return CargosStock.Count;
         }
 
-        public ICargo RemoveFromStock()
+        public ICargo RemoveCargo()
         {
             return CargosStock.Dequeue();
         }
 
-        public bool TryRemoveFromStock(out ICargo cargo)
+        public bool TryRemoveCargo(out ICargo cargo)
         {
             cargo = null;
-            if (CargosStock.Count <= 0) return false;
-            cargo = CargosStock.Dequeue();
+            if (GetCount() <= 0) return false;
+            cargo = RemoveCargo();
             return true;
         }
     }
