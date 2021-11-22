@@ -44,6 +44,20 @@ namespace Cargolator.Tests
             Assert.True(!result);
         }
         [Fact]
+        public void TryTakeCargoIsNullFalseTest()
+        {
+            // Arrange
+            Worker wrk = new Loader();
+            Cargo crg = null;
+
+            // Act
+
+            bool result = wrk.TryTake(crg);
+
+            // Assert
+            Assert.True(!result);
+        }
+        [Fact]
         public void TryTakeCargoStatusOnHandsFalseTest()
         {
             // Arrange

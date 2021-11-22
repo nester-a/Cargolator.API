@@ -8,8 +8,8 @@ namespace Cargolator.API.Base.Interfaces
 {
     public interface ITakeCargo
     {
-        ICargo TakedCargo { get; }
-        void Take(ICargo cargo);
-        bool TryTake(ICargo cargo);
+        Cargo TakedCargo { get; }
+        void Take(Cargo cargo);
+        bool TryTake(Cargo cargo);
     }
 }

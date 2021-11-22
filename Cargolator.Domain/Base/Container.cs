@@ -9,7 +9,7 @@ namespace Cargolator.API.Base
 {
     public class Container : ILoadable
     {
-        public Stack<ICargo> LoadedCargo { get; private set; } = new Stack<ICargo>();
+        public Stack<Cargo> LoadedCargo { get; private set; } = new Stack<Cargo>();
 
         public int Length { get; set; }
 
@@ -26,7 +26,7 @@ namespace Cargolator.API.Base
             return LoadedCargo.Count();
         }
 
-        public void AddRangeCargo(params ICargo[] cargos)
+        public void AddRangeCargo(params Cargo[] cargos)
         {
             for (int i = 0; i < cargos.Length; i++)
             {
@@ -34,7 +34,7 @@ namespace Cargolator.API.Base
             }
         }
 
-        public void AddCargo(ICargo cargo)
+        public void AddCargo(Cargo cargo)
         {
             LoadedCargo.Push(cargo);
         }
@@ -47,12 +47,12 @@ namespace Cargolator.API.Base
             }
         }
 
-        public ICargo RemoveCargo()
+        public Cargo RemoveCargo()
         {
             return LoadedCargo.Pop();
         }
 
-        public bool TryRemoveCargo(out ICargo cargo)
+        public bool TryRemoveCargo(out Cargo cargo)
         {
             cargo = null;
             if (GetCount() <= 0) return false;

@@ -8,6 +8,6 @@ namespace Cargolator.API.Base.Interfaces
 {
     public interface IStock : IAddCargo, IRemoveCargo, IGetCount
     {
-        Queue<ICargo> CargosStock { get; }
+        Queue<Cargo> CargosStock { get; }
     }
 }

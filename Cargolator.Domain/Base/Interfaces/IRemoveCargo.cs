@@ -9,7 +9,7 @@ namespace Cargolator.API.Base.Interfaces
     public interface IRemoveCargo
     {
 
-        ICargo RemoveCargo();
-        bool TryRemoveCargo(out ICargo cargo);
+        Cargo RemoveCargo();
+        bool TryRemoveCargo(out Cargo cargo);
     }
 }

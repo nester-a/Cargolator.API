@@ -8,8 +8,8 @@ namespace Cargolator.API.Base.Interfaces
 {
     public interface IAddCargo
     {
-        void AddRangeCargo(params ICargo[] cargos);
-        void AddCargo(ICargo cargo);
+        void AddRangeCargo(params Cargo[] cargos);
+        void AddCargo(Cargo cargo);
         void AddRangeCargo(ICollection<Cargo> cargos);
     }
 }

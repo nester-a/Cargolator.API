@@ -8,6 +8,6 @@ namespace Cargolator.API.Base.Interfaces
 {
     public interface ILoadable : ISizeable, IGetCount, IAddCargo, IRemoveCargo
     {
-        Stack<ICargo> LoadedCargo { get; }
+        Stack<Cargo> LoadedCargo { get; }
     }
 }
