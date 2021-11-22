@@ -146,7 +146,7 @@ namespace Cargolator.Tests
             Loader ldr = new Loader();
 
             // Act
-            stck.CargosStock.Enqueue(crg);
+            stck.AddCargo(crg);
             ldr.TakeFromStock(stck);
 
             bool result = stck.CargosStock.Count == 0 && ldr.TakedCargo.Equals(crg) && crg.Status == CargoStatus.OnHands;
@@ -164,7 +164,7 @@ namespace Cargolator.Tests
             Loader ldr = new Loader();
 
             // Act
-            stck.CargosStock.Enqueue(crg);
+            stck.AddCargo(crg);
 
             bool result = ldr.TryTakeFromStock(stck);
 
@@ -196,7 +196,7 @@ namespace Cargolator.Tests
             Loader ldr = new Loader();
 
             // Act
-            stck.CargosStock.Enqueue(crg);
+            stck.AddCargo(crg);
             ldr.Take(crg2);
 
             bool result = ldr.TryTakeFromStock(stck);
