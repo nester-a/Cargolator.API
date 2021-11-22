@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Cargolator.API.Base.Interfaces
 {
-    public interface IStock : IAddOnStock, IRemoveFromStock
+    public interface IRemoveFromStock
     {
-        Queue<ICargo> CargosStock { get; set; }
+
+        ICargo RemoveFromStock();
+        bool TryRemoveFromStock(out ICargo cargo);
     }
 }

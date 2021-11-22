@@ -1,4 +1,5 @@
 ﻿using Cargolator.API.Base;
+using Cargolator.API.Base.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace Cargolator.Tests
             cnt.LoadedCargo.Push(crg);
             unldr.Unload(cnt);
 
-            bool result = cnt.LoadedCargo.Count == 0 && unldr.TakedCargo.Equals(crg);
+            bool result = cnt.LoadedCargo.Count == 0 && unldr.TakedCargo.Equals(crg) && unldr.TakedCargo.Status == CargoStatus.OnHands;
 
             // Assert
             Assert.True(result);
@@ -90,7 +91,7 @@ namespace Cargolator.Tests
             unldr.Take(crg);
             unldr.PlaceToStock(stck);
 
-            bool result = unldr.TakedCargo is null && stck.CargosStock.Count == 1 && stck.CargosStock.Contains(crg);
+            bool result = unldr.TakedCargo is null && stck.CargosStock.Count == 1 && stck.CargosStock.Contains(crg) && crg.Status == CargoStatus.OnStock;
 
             // Assert
             Assert.True(result);

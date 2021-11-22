@@ -1,4 +1,5 @@
-﻿using Cargolator.API.Base.Interfaces;
+﻿using Cargolator.API.Base.Enums;
+using Cargolator.API.Base.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace Cargolator.API.Base
 
         public void AddOnStock(ICargo cargo)
         {
+            if (cargo.Status != CargoStatus.OnStock) cargo.ChangeStatus(CargoStatus.OnStock);
             CargosStock.Enqueue(cargo);
         }
 
@@ -20,7 +22,7 @@ namespace Cargolator.API.Base
         {
             for (int i = 0; i < cargos.Length; i++)
             {
-                CargosStock.Enqueue(cargos[i]);
+                AddOnStock(cargos[i]);
             }
         }
 
@@ -30,6 +32,19 @@ namespace Cargolator.API.Base
             {
                 AddOnStock(cargo);
             }
+        }
+
+        public ICargo RemoveFromStock()
+        {
+            return CargosStock.Dequeue();
+        }
+
+        public bool TryRemoveFromStock(out ICargo cargo)
+        {
+            cargo = null;
+            if (CargosStock.Count <= 0) return false;
+            cargo = CargosStock.Dequeue();
+            return true;
         }
     }
 }
