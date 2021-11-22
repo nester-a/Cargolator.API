@@ -1,4 +1,5 @@
 ﻿using Cargolator.API.Base;
+using Cargolator.API.Base.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace Cargolator.Tests
             ldr.Take(crg);
             ldr.Load(cnt);
 
-            bool result = ldr.TakedCargo is null && cnt.LoadedCargo.Contains(crg);
+            bool result = ldr.TakedCargo is null && cnt.LoadedCargo.Contains(crg) && crg.Status == CargoStatus.InContainer;
 
             // Assert
             Assert.True(result);
@@ -46,7 +47,7 @@ namespace Cargolator.Tests
         }
 
         [Fact]
-        public void TryLoadFalseTest()
+        public void TryLoadContainerIsNullFalseTest()
         {
             // Arrange
             Container cnt = null;
@@ -56,6 +57,20 @@ namespace Cargolator.Tests
             // Act
             ldr.Take(crg);
 
+            bool result = ldr.TryLoad(cnt);
+
+            // Assert
+            Assert.True(!result);
+        }
+
+        [Fact]
+        public void TryLoadTakedCargoIsNullFalseTest()
+        {
+            // Arrange
+            Container cnt = null;
+            Loader ldr = new Loader();
+
+            // Act
             bool result = ldr.TryLoad(cnt);
 
             // Assert
@@ -96,10 +111,24 @@ namespace Cargolator.Tests
         }
 
         [Fact]
-        public void TryRotateFalseTest()
+        public void TryRotateTakedCargoIsNullFalseTest()
         {
             // Arrange
             Loader ldr = new Loader();
+
+            // Act
+            bool result = ldr.TryRotate();
+
+            // Assert
+            Assert.True(!result);
+        }
+
+        [Fact]
+        public void TryRotateTakedCargoIsSquareFalseTest()
+        {
+            // Arrange
+            Loader ldr = new Loader();
+            Cargo crg = new Cargo(0, 2, 2);
 
             // Act
             bool result = ldr.TryRotate();
@@ -120,7 +149,7 @@ namespace Cargolator.Tests
             stck.CargosStock.Enqueue(crg);
             ldr.TakeFromStock(stck);
 
-            bool result = stck.CargosStock.Count == 0 && ldr.TakedCargo.Equals(crg);
+            bool result = stck.CargosStock.Count == 0 && ldr.TakedCargo.Equals(crg) && crg.Status == CargoStatus.OnHands;
 
             // Assert
             Assert.True(result);
@@ -144,13 +173,32 @@ namespace Cargolator.Tests
         }
 
         [Fact]
-        public void TryTakeFromStockFalseTest()
+        public void TryTakeFromStockStockIsEmptyFalseTest()
         {
             // Arrange
             Stock stck = new Stock();
             Loader ldr = new Loader();
 
             // Act
+            bool result = ldr.TryTakeFromStock(stck);
+
+            // Assert
+            Assert.True(!result);
+        }
+
+        [Fact]
+        public void TryTakeFromStockTakedCargoIsNotNullFalseTest()
+        {
+            // Arrange
+            Stock stck = new Stock();
+            Cargo crg = new Cargo(0, 2, 2);
+            Cargo crg2 = new Cargo(1, 2, 2);
+            Loader ldr = new Loader();
+
+            // Act
+            stck.CargosStock.Enqueue(crg);
+            ldr.Take(crg2);
+
             bool result = ldr.TryTakeFromStock(stck);
 
             // Assert
