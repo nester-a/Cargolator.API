@@ -20,7 +20,7 @@ namespace Cargolator.Tests
 
             // Act
             cnt.AddCargo(crg);
-            bool result = cnt.LoadedCargo.Contains(crg) && cnt.GetCount() == 1 && crg.Status == CargoStatus.InContainer;
+            bool result = cnt.Contains(crg) && cnt.GetCount() == 1 && crg.Status == CargoStatus.InContainer;
 
             // Assert
             Assert.True(result);
@@ -53,7 +53,7 @@ namespace Cargolator.Tests
             // Act
             cnt.AddRangeCargo(crg1, crg2);
 
-            bool result = cnt.GetCount() == 2 && cnt.LoadedCargo.Contains(crg1) && cnt.LoadedCargo.Contains(crg2);
+            bool result = cnt.GetCount() == 2 && cnt.Contains(crg1) && cnt.Contains(crg2);
 
             // Assert
             Assert.True(result);
@@ -73,7 +73,7 @@ namespace Cargolator.Tests
             // Act
             cnt.AddRangeCargo(crgs);
 
-            bool result = cnt.GetCount() == 2 && cnt.LoadedCargo.Contains(new Cargo(0, 1, 1)) && cnt.LoadedCargo.Contains(new Cargo(1, 2, 2));
+            bool result = cnt.GetCount() == 2 && cnt.Contains(new Cargo(0, 1, 1)) && cnt.Contains(new Cargo(1, 2, 2));
 
             // Assert
             Assert.True(result);
@@ -130,6 +130,22 @@ namespace Cargolator.Tests
             bool action2 = unldr.TryTake(crg);
 
             bool result = !action1 && !action2 && crg is null;
+
+            // Assert
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void ContainsTest()
+        {
+            // Arrange
+            Container cnt = new Container(5, 5);
+            Cargo crg = new Cargo(0, 1, 1);
+
+            // Act
+            cnt.AddCargo(crg);
+
+            bool result = cnt.Contains(crg);
 
             // Assert
             Assert.True(result);

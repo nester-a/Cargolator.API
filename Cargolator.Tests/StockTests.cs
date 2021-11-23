@@ -133,5 +133,21 @@ namespace Cargolator.Tests
             // Assert
             Assert.True(result);
         }
+
+        [Fact]
+        public void ContainsTest()
+        {
+            // Arrange
+            Stock stck = new Stock();
+            Cargo crg = new Cargo(0, 1, 1);
+
+            // Act
+            stck.AddCargo(crg);
+
+            bool result = stck.Contains(crg);
+
+            // Assert
+            Assert.True(result);
+        }
     }
 }

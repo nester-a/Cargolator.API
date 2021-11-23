@@ -61,5 +61,10 @@ namespace Cargolator.API.Base
             cargo = RemoveCargo();
             return true;
         }
+
+        public bool Contains(Cargo cargo)
+        {
+            return LoadedCargo.Contains(cargo);
+        }
     }
 }

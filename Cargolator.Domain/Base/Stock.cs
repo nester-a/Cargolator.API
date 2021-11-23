@@ -34,6 +34,11 @@ namespace Cargolator.API.Base
             }
         }
 
+        public bool Contains(Cargo cargo)
+        {
+            return CargosStock.Contains(cargo);
+        }
+
         public int GetCount()
         {
             return CargosStock.Count;
