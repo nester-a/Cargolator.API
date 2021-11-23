@@ -35,12 +35,14 @@ namespace Cargolator.API.Base.AbstractClasses
         }
         public void DropCargo()
         {
+            if (TakedCargo is null) throw new NullReferenceException($"This {nameof(ThisWorkerType)} taked cargo is null");
             TakedCargo.ChangeStatus(CargoStatus.Wait);
             TakedCargo = null;
             DropCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} successfully drop his cargo.", true));
         }
         public void DropCargo(CargoStatus dropedCargoStatus)
         {
+            if (TakedCargo is null) throw new NullReferenceException($"This {nameof(ThisWorkerType)} taked cargo is null");
             if (dropedCargoStatus == CargoStatus.OnHands) throw new ArgumentException("Droped cargo status cannot be OnHands");
             TakedCargo.ChangeStatus(dropedCargoStatus);
             TakedCargo = null;
@@ -68,6 +70,8 @@ namespace Cargolator.API.Base.AbstractClasses
         }
         public void TakeFromWorker(ITakeFromWorker worker)
         {
+            if (worker is null) throw new NullReferenceException("Worker argument is null");
+            if (TakedCargo is null) throw new NullReferenceException($"This {nameof(ThisWorkerType)} taked cargo is null");
             worker.TakedCargo.ChangeStatus(CargoStatus.Wait);
             TryTake(worker.TakedCargo);
             worker.TryDropCargo();
