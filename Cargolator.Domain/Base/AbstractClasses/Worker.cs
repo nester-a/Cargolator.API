@@ -15,17 +15,17 @@ namespace Cargolator.API.Base.AbstractClasses
         public event WorkerHandler TakeCargoEvent;
         public event WorkerHandler DropCargoEvent;
         public WorkerType ThisWorkerType { get; protected set; }
-        public ICargo TakedCargo { get; private set; }
-        public void Take(ICargo cargo)
+        public Cargo TakedCargo { get; private set; }
+        public void Take(Cargo cargo)
         {
             if (cargo.Status == CargoStatus.OnHands) throw new ArgumentException("Cargo has wrong status", $"Cargo #{cargo.Id}");
             TakedCargo = cargo;
             TakedCargo.ChangeStatus(CargoStatus.OnHands);
             TakeCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} successfully took the cargo {cargo.Id}", true));
         }
-        public bool TryTake(ICargo cargo)
+        public bool TryTake(Cargo cargo)
         {
-            if (TakedCargo is null && cargo.Status != CargoStatus.OnHands)
+            if (TakedCargo is null && cargo is not null && cargo.Status != CargoStatus.OnHands)
             {
                 Take(cargo);
                 return true;
@@ -71,6 +71,7 @@ namespace Cargolator.API.Base.AbstractClasses
             worker.TakedCargo.ChangeStatus(CargoStatus.Wait);
             TryTake(worker.TakedCargo);
             worker.TryDropCargo();
+            TakedCargo.ChangeStatus(CargoStatus.OnHands);
             TakeCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} successfully took the cargo {TakedCargo.Id} from other worker ({nameof(worker.ThisWorkerType)})", true));
         }
         public bool TryTakeFromWorker(ITakeFromWorker worker)

@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Cargolator.API.Base.Interfaces
 {
-    public interface ILoadable : ISizeable, IGetCount, IAddCargo, IRemoveCargo
+    public interface IAddCargo
     {
-        Stack<Cargo> LoadedCargo { get; }
+        void AddRangeCargo(params Cargo[] cargos);
+        void AddCargo(Cargo cargo);
+        void AddRangeCargo(ICollection<Cargo> cargos);
     }
 }
