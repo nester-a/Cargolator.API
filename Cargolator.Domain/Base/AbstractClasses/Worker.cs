@@ -72,7 +72,8 @@ namespace Cargolator.API.Base.AbstractClasses
         public void TakeFromWorker(ITakeFromWorker worker)
         {
             if (worker is null) throw new ArgumentNullException("Worker","Worker parameter is null");
-            if (TakedCargo is null) throw new NullReferenceException($"This {nameof(ThisWorkerType)} taked cargo is null");
+            if (worker.TakedCargo is null) throw new NullReferenceException($"This worker parameter taked cargo is null");
+            if (TakedCargo is not null) throw new NullReferenceException($"This {nameof(ThisWorkerType)} taked cargo is not null");
             worker.TakedCargo.ChangeStatus(CargoStatus.Wait);
             TryTake(worker.TakedCargo);
             worker.TryDropCargo();
