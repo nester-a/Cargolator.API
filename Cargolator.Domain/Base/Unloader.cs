@@ -35,11 +35,15 @@ namespace Cargolator.API.Base
         }
         public void Unload(ILoadable container)
         {
+            if (container is null) throw new ArgumentNullException("Container", "Container is null");
+            if (TakedCargo is not null) throw new InvalidOperationException($"This {nameof(ThisWorkerType)} taked cargo is not null");
             TryTake(container.RemoveCargo());
             UnloadCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} successfully unload the cargo {TakedCargo.Id} from the container", true));
         }
         public void PlaceToStock(IStock stock)
         {
+            if (stock is null) throw new ArgumentNullException("Stock", "Stock is null");
+            if (TakedCargo is null) throw new InvalidOperationException($"This {nameof(ThisWorkerType)} taked cargo is null");
             stock.AddCargo(TakedCargo);
             PlaceToStockCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} successfully place the cargo {TakedCargo.Id} to stock", true));
             TryDropCargo(CargoStatus.OnStock);
