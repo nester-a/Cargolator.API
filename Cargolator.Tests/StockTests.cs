@@ -28,7 +28,7 @@ namespace Cargolator.Tests
         }
 
         [Fact]
-        public void AddRangeOnStockArrayTest()
+        public void AddRangeArrayParamTest()
         {
             // Arrange
             Stock stck = new Stock();
@@ -45,7 +45,7 @@ namespace Cargolator.Tests
         }
 
         [Fact]
-        public void AddRangeOnStockCollectionTest()
+        public void AddRangeCollectionParamTest()
         {
             // Arrange
             Stock stck = new Stock();
@@ -115,6 +115,7 @@ namespace Cargolator.Tests
             // Assert
             Assert.True(result);
         }
+
         [Fact]
         public void TryRemoveCargoStockIsEmptyFalseTest()
         {

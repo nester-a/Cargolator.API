@@ -1,4 +1,5 @@
-﻿using Cargolator.API.Base.Interfaces;
+﻿using Cargolator.API.Base.Enums;
+using Cargolator.API.Base.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +37,7 @@ namespace Cargolator.API.Base
 
         public void AddCargo(Cargo cargo)
         {
+            if (cargo.Status != CargoStatus.InContainer) cargo.ChangeStatus(CargoStatus.InContainer);
             LoadedCargo.Push(cargo);
         }
 
