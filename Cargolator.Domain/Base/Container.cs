@@ -29,6 +29,7 @@ namespace Cargolator.API.Base
 
         public void AddRangeCargo(params Cargo[] cargos)
         {
+            if (cargos is null) throw new ArgumentNullException("cargos", "Cargos parameter is null");
             for (int i = 0; i < cargos.Length; i++)
             {
                 AddCargo(cargos[i]);
@@ -37,12 +38,14 @@ namespace Cargolator.API.Base
 
         public void AddCargo(Cargo cargo)
         {
+            if (cargo is null) throw new ArgumentNullException("cargos", "Cargos parameter is null");
             if (cargo.Status != CargoStatus.InContainer) cargo.ChangeStatus(CargoStatus.InContainer);
             LoadedCargo.Push(cargo);
         }
 
         public void AddRangeCargo(ICollection<Cargo> cargos)
         {
+            if (cargos is null) throw new ArgumentNullException("cargos", "Cargos parameter is null");
             foreach (var cargo in cargos)
             {
                 AddCargo(cargo);
@@ -51,6 +54,7 @@ namespace Cargolator.API.Base
 
         public Cargo RemoveCargo()
         {
+            if (GetCount() == 0) throw new InvalidOperationException("Container is empty");
             return LoadedCargo.Pop();
         }
 

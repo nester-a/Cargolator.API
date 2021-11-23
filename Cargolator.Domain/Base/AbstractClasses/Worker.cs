@@ -18,6 +18,7 @@ namespace Cargolator.API.Base.AbstractClasses
         public Cargo TakedCargo { get; private set; }
         public void Take(Cargo cargo)
         {
+            if (cargo is null) throw new ArgumentNullException("Cargo", "Cargo parameter is null");
             if (cargo.Status == CargoStatus.OnHands) throw new ArgumentException("Cargo has wrong status", $"Cargo #{cargo.Id}");
             TakedCargo = cargo;
             TakedCargo.ChangeStatus(CargoStatus.OnHands);
@@ -70,7 +71,7 @@ namespace Cargolator.API.Base.AbstractClasses
         }
         public void TakeFromWorker(ITakeFromWorker worker)
         {
-            if (worker is null) throw new NullReferenceException("Worker argument is null");
+            if (worker is null) throw new ArgumentNullException("Worker","Worker parameter is null");
             if (TakedCargo is null) throw new NullReferenceException($"This {nameof(ThisWorkerType)} taked cargo is null");
             worker.TakedCargo.ChangeStatus(CargoStatus.Wait);
             TryTake(worker.TakedCargo);
