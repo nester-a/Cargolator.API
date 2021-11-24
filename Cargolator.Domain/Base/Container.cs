@@ -18,6 +18,8 @@ namespace Cargolator.API.Base
 
         public Container(int length, int width)
         {
+            if (length == 0) throw new ArgumentException("Container lenght can not be 0", "Length");
+            if (width == 0) throw new ArgumentException("Container Width can not be 0", "Width");
             Length = length;
             Width = width;
         }
