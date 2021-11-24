@@ -125,5 +125,45 @@ namespace Cargolator.Tests
             // Assert
             Assert.True(catched);
         }
+
+        [Fact]
+        public void ContainerConstructorLenghtArgumentExceptionTest()
+        {
+            // Arrange
+            bool catched = false;
+
+            // Act
+            try
+            {
+                Container crg = new Container(0, 1);
+            }
+            catch (ArgumentException e)
+            {
+                if (e is not null) catched = true;
+            }
+
+            // Assert
+            Assert.True(catched);
+        }
+
+        [Fact]
+        public void ContainerConstructorWidthArgumentExceptionTest()
+        {
+            // Arrange
+            bool catched = false;
+
+            // Act
+            try
+            {
+                Container crg = new Container(1, 0);
+            }
+            catch (ArgumentException e)
+            {
+                if (e is not null) catched = true;
+            }
+
+            // Assert
+            Assert.True(catched);
+        }
     }
 }
