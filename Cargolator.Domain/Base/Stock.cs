@@ -40,6 +40,7 @@ namespace Cargolator.API.Base
         public bool Contains(Cargo cargo)
         {
             if (cargo is null) throw new ArgumentNullException("Cargo", "Cargo is null");
+            if (GetCount() == 0) throw new InvalidOperationException("Stock is empty");
             return CargosStock.Contains(cargo);
         }
 
