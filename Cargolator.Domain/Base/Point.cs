@@ -13,6 +13,8 @@ namespace Cargolator.API.Base
         public Point() { }
         public Point(int x, int y)
         {
+            if (x < 0) throw new ArgumentException("X cannot be a negative number", "X");
+            if (y < 0) throw new ArgumentException("Y cannot be a negative number", "Y");
             X = x;
             Y = y;
         }
