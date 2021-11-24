@@ -20,6 +20,8 @@ namespace Cargolator.API.Base
 
         public Cargo(int id, int length, int width)
         {
+            if (length == 0) throw new ArgumentException("Cargo lenght can not be 0", "Length");
+            if (width == 0) throw new ArgumentException("Cargo Width can not be 0", "Width");
             Id = id;
             Length = length;
             Width = width;
