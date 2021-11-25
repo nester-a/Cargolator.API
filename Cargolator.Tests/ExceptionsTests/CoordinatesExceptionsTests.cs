@@ -6,53 +6,47 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Cargolator.Tests
+namespace Cargolator.Tests.ExceptionsTests
 {
-    public class PointExceptionsTests
+    public class CoordinatesExceptionsTests
     {
         [Fact]
-        public void PointConstructorXArgumentExceptionTest()
+        public void CoordinatesConstructorUpperLeftCornerArgumentNullExceptionTest()
         {
             // Arrange
-
             bool catched = false;
 
             // Act
-
             try
             {
-                Point p = new Point(-1, 0);
+                Coordinates crg = new Coordinates(null, new Point(0, 0));
             }
-            catch (ArgumentException e)
+            catch (ArgumentNullException e)
             {
                 if (e is not null) catched = true;
             }
 
             // Assert
-
             Assert.True(catched);
         }
 
         [Fact]
-        public void PointConstructorYArgumentExceptionTest()
+        public void CoordinatesConstructorLowerRightCornerArgumentNullExceptionTest()
         {
             // Arrange
-
             bool catched = false;
 
             // Act
-
             try
             {
-                Point p = new Point(0, -1);
+                Coordinates crg = new Coordinates(new Point(0, 0), null);
             }
-            catch (ArgumentException e)
+            catch (ArgumentNullException e)
             {
                 if (e is not null) catched = true;
             }
 
             // Assert
-
             Assert.True(catched);
         }
     }

@@ -6,125 +6,126 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Cargolator.Tests
+namespace Cargolator.Tests.ExceptionsTests
 {
-    public class StockExceptionsTests
+    public class LoaderExceptionsTests
     {
         [Fact]
-        public void AddCargoCargoArgumentNullExceptionTest()
+        public void LoadContainerArgumentNullExceptionTest()
         {
             // Arrange
-            Stock stck = new Stock();
-
-            bool catched = false;
-
-            // Act
-            try
-            {
-                stck.AddCargo(null);
-            }
-            catch (ArgumentNullException e)
-            {
-                if (e is not null) catched = true;
-            }
-
-            // Assert
-
-            Assert.True(catched);
-        }
-
-        [Fact]
-        public void AddRangeCargoArrayArgumentNullExceptionTest()
-        {
-            // Arrange
-            Stock stck = new Stock();
-            Cargo[] crgs = null;
-
-            bool catched = false;
-
-            // Act
-            try
-            {
-                stck.AddRangeCargo(crgs);
-            }
-            catch (ArgumentNullException e)
-            {
-                if (e is not null) catched = true;
-            }
-
-            // Assert
-
-            Assert.True(catched);
-        }
-
-        [Fact]
-        public void AddRangeCargoCollectionArgumentNullExceptionTest()
-        {
-            // Arrange
-            Stock stck = new Stock();
-            List<Cargo> crgs = null;
-
-            bool catched = false;
-
-            // Act
-            try
-            {
-                stck.AddRangeCargo(crgs);
-            }
-            catch (ArgumentNullException e)
-            {
-                if (e is not null) catched = true;
-            }
-
-            // Assert
-
-            Assert.True(catched);
-        }
-
-        [Fact]
-        public void ContainsCargoArgumentNullExceptionTest()
-        {
-            // Arrange
-            Stock stck = new Stock();
-            Cargo crg = new Cargo(0, 1, 1);
-            Cargo crg2 = null;
-            
-
-            bool catched = false;
-
-            // Act
-
-            stck.AddCargo(crg);
-
-            try
-            {
-                stck.Contains(crg2);
-            }
-            catch (ArgumentNullException e)
-            {
-                if (e is not null) catched = true;
-            }
-
-            // Assert
-
-            Assert.True(catched);
-        }
-
-        [Fact]
-        public void ContainsStockIsEmptyInvalidOperationExceptionTest()
-        {
-            // Arrange
-            Stock stck = new Stock();
+            Loader ldr = new Loader();
             Cargo crg = new Cargo(0, 1, 1);
 
             bool catched = false;
 
             // Act
 
+            ldr.Take(crg);
 
             try
             {
-                stck.Contains(crg);
+                ldr.Load(null);
+            }
+            catch (ArgumentNullException e)
+            {
+                if (e is not null) catched = true;
+            }
+
+            // Assert
+
+            Assert.True(catched);
+        }
+
+        [Fact]
+        public void LoadTakedCargoNullReferenceExceptionsTest()
+        {
+            // Arrange
+            Loader ldr = new Loader();
+            Container cnt = new Container(5, 5);
+
+            bool catched = false;
+
+            // Act
+
+            try
+            {
+                ldr.Load(cnt);
+            }
+            catch (NullReferenceException e)
+            {
+                if (e is not null) catched = true;
+            }
+
+            // Assert
+
+            Assert.True(catched);
+        }
+
+        [Fact]
+        public void RotateTakedCargoNullReferenceExceptionsTest()
+        {
+            // Arrange
+            Loader ldr = new Loader();
+
+            bool catched = false;
+
+            // Act
+
+            try
+            {
+                ldr.Rotate();
+            }
+            catch (NullReferenceException e)
+            {
+                if (e is not null) catched = true;
+            }
+
+            // Assert
+
+            Assert.True(catched);
+        }
+
+        [Fact]
+        public void TakeFromStockStockArgumentNullExceptionTest()
+        {
+            // Arrange
+            Loader ldr = new Loader();
+
+            bool catched = false;
+
+            // Act
+
+            try
+            {
+                ldr.TakeFromStock(null);
+            }
+            catch (ArgumentNullException e)
+            {
+                if (e is not null) catched = true;
+            }
+
+            // Assert
+
+            Assert.True(catched);
+        }
+
+        [Fact]
+        public void TakeFromStockTakedCargoIsNotNullInvalidOperationExceptionTest()
+        {
+            // Arrange
+            Loader ldr = new Loader();
+            Cargo crg = new Cargo(0, 1, 1);
+            Stock stck = new Stock();
+
+            bool catched = false;
+
+            // Act
+
+            ldr.Take(crg);
+            try
+            {
+                ldr.TakeFromStock(stck);
             }
             catch (InvalidOperationException e)
             {
@@ -137,17 +138,19 @@ namespace Cargolator.Tests
         }
 
         [Fact]
-        public void RemoveCargoStockIsEmptyInvalidOperationExceptionTest()
+        public void TakeFromStockStockIsEmptyInvalidOperationExceptionTest()
         {
             // Arrange
+            Loader ldr = new Loader();
             Stock stck = new Stock();
 
             bool catched = false;
 
             // Act
+
             try
             {
-                stck.RemoveCargo();
+                ldr.TakeFromStock(stck);
             }
             catch (InvalidOperationException e)
             {

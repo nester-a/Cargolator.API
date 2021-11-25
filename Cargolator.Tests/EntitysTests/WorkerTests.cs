@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Cargolator.Tests
+namespace Cargolator.Tests.EntitysTests
 {
     public class WorkerTests
     {

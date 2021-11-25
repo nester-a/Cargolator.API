@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Cargolator.Tests
+namespace Cargolator.Tests.EntitysTests
 {
     public class UnloaderTests
     {
@@ -23,7 +23,7 @@ namespace Cargolator.Tests
             cnt.AddCargo(crg);
             unldr.Unload(cnt);
 
-            bool result = cnt.LoadedCargo.Count == 0 && unldr.TakedCargo.Equals(crg) && unldr.TakedCargo.Status == CargoStatus.OnHands;
+            bool result = cnt.GetCount() == 0 && unldr.TakedCargo.Equals(crg) && unldr.TakedCargo.Status == CargoStatus.OnHands;
 
             // Assert
             Assert.True(result);
@@ -91,7 +91,7 @@ namespace Cargolator.Tests
             unldr.Take(crg);
             unldr.PlaceToStock(stck);
 
-            bool result = unldr.TakedCargo is null && stck.CargosStock.Count == 1 && stck.CargosStock.Contains(crg) && crg.Status == CargoStatus.OnStock;
+            bool result = unldr.TakedCargo is null && stck.GetCount() == 1 && stck.Contains(crg) && crg.Status == CargoStatus.OnStock;
 
             // Assert
             Assert.True(result);

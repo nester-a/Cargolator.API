@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Cargolator.Tests
+namespace Cargolator.Tests.EntitysTests
 {
     public class LoaderTests
     {
@@ -23,7 +23,7 @@ namespace Cargolator.Tests
             ldr.Take(crg);
             ldr.Load(cnt);
 
-            bool result = ldr.TakedCargo is null && cnt.LoadedCargo.Contains(crg) && crg.Status == CargoStatus.InContainer;
+            bool result = ldr.TakedCargo is null && cnt.Contains(crg) && crg.Status == CargoStatus.InContainer;
 
             // Assert
             Assert.True(result);

@@ -17,6 +17,7 @@ namespace Cargolator.API.Base
             if (container is null) throw new ArgumentNullException("Container", "Container is null");
             ContainerMap = new string[container.Length, container.Width];
         }
+
         public Coordinates FindPlaceAndLoadOnIt(ICargo cargo)
         {
             if (cargo is null) throw new ArgumentNullException("Cargo", "Cargo is null");
@@ -35,6 +36,7 @@ namespace Cargolator.API.Base
             }
             return null;
         }
+
         public bool CheckSquare(IPoint startPoint, ICargo cargo)
         {
             if (startPoint is null) throw new ArgumentNullException("StartPoint", "StartPoint is null");
@@ -52,6 +54,7 @@ namespace Cargolator.API.Base
             }
             return true;
         }
+
         public Point FillMap(IPoint startPoint, ICargo cargo)
         {
             if (startPoint is null) throw new ArgumentNullException("StartPoint", "StartPoint is null");
@@ -70,6 +73,7 @@ namespace Cargolator.API.Base
             }
             return new Point(X, Y);
         }
+
         public bool EraseCargoFromMap(ICargo cargo)
         {
             if (cargo is null) throw new ArgumentNullException("Cargo", "Cargo is null");
