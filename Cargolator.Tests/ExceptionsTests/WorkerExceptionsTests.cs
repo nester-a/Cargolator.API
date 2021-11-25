@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Cargolator.Tests
+namespace Cargolator.Tests.ExceptionsTests
 {
     public class WorkerExceptionsTests
     {
