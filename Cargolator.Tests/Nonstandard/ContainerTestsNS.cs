@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Cargolator.Tests
 {
-    public class ContainerTests
+    public class ContainerTestsNS
     {
         [Fact]
         public void LoadContainerResult()

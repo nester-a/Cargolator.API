@@ -9,56 +9,18 @@ using Xunit;
 
 namespace Cargolator.Tests
 {
-    public class StockTests
+    public class ContainerTests
     {
         [Fact]
-        public void AddOnStockTest()
+        public void AddCargoTest()
         {
             // Arrange
-            Stock stck = new Stock();
+            Container cnt = new Container(5, 5);
             Cargo crg = new Cargo(0, 1, 1);
 
             // Act
-            stck.AddCargo(crg);
-
-            bool result = stck.GetCount() == 1 && stck.CargosStock.Contains(crg) && crg.Status == CargoStatus.OnStock;
-
-            // Assert
-            Assert.True(result);
-        }
-
-        [Fact]
-        public void AddRangeArrayParamTest()
-        {
-            // Arrange
-            Stock stck = new Stock();
-            Cargo crg1 = new Cargo(0, 1, 1);
-            Cargo crg2 = new Cargo(1, 2, 2);
-
-            // Act
-            stck.AddRangeCargo(crg1, crg2);
-
-            bool result = stck.GetCount() == 2 && stck.CargosStock.Contains(crg1) && stck.CargosStock.Contains(crg2);
-
-            // Assert
-            Assert.True(result);
-        }
-
-        [Fact]
-        public void AddRangeCollectionParamTest()
-        {
-            // Arrange
-            Stock stck = new Stock();
-            List<Cargo> crgs = new List<Cargo>()
-            {
-                new Cargo(0, 1, 1),
-                new Cargo(1, 2, 2),
-            };
-
-            // Act
-            stck.AddRangeCargo(crgs);
-
-            bool result = stck.GetCount() == 2 && stck.CargosStock.Contains(new Cargo(0, 1, 1)) && stck.CargosStock.Contains(new Cargo(1, 2, 2));
+            cnt.AddCargo(crg);
+            bool result = cnt.Contains(crg) && cnt.GetCount() == 1 && crg.Status == CargoStatus.InContainer;
 
             // Assert
             Assert.True(result);
@@ -68,49 +30,88 @@ namespace Cargolator.Tests
         public void GetCountTest()
         {
             // Arrange
-            Stock stck = new Stock();
+            Container cnt = new Container(5, 5);
             Cargo crg = new Cargo(0, 1, 1);
+            int exp = 1;
 
             // Act
-            stck.AddCargo(crg);
+            cnt.AddCargo(crg);
+            int result = cnt.GetCount();
 
             // Assert
-            Assert.Equal(1, stck.GetCount());
+            Assert.Equal(exp, result);
+        }
+
+        [Fact]
+        public void AddRangeArrayParamTest()
+        {
+            // Arrange
+            Container cnt = new Container(5, 5);
+            Cargo crg1 = new Cargo(0, 1, 1);
+            Cargo crg2 = new Cargo(1, 2, 2);
+
+            // Act
+            cnt.AddRangeCargo(crg1, crg2);
+
+            bool result = cnt.GetCount() == 2 && cnt.Contains(crg1) && cnt.Contains(crg2);
+
+            // Assert
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void AddRangeCollectionParamTest()
+        {
+            // Arrange
+            Container cnt = new Container(5, 5);
+            List<Cargo> crgs = new List<Cargo>()
+            {
+                new Cargo(0, 1, 1),
+                new Cargo(1, 2, 2),
+            };
+
+            // Act
+            cnt.AddRangeCargo(crgs);
+
+            bool result = cnt.GetCount() == 2 && cnt.Contains(new Cargo(0, 1, 1)) && cnt.Contains(new Cargo(1, 2, 2));
+
+            // Assert
+            Assert.True(result);
         }
 
         [Fact]
         public void RemoveCargoTest()
         {
             // Arrange
-            Stock stck = new Stock();
+            Container cnt = new Container(5, 5);
             Cargo crg = new Cargo(0, 1, 1);
-            Loader ldr = new Loader();
+            Unloader unldr = new Unloader();
 
             // Act
-            stck.AddCargo(crg);
-            ldr.Take(stck.RemoveCargo());
+            cnt.AddCargo(crg);
+            unldr.Take(cnt.RemoveCargo());
 
-            bool result = stck.GetCount() == 0 && ldr.TakedCargo.Equals(crg) && crg.Status == CargoStatus.OnHands;
+            bool result = cnt.GetCount() == 0 && unldr.TakedCargo.Equals(crg) && crg.Status == CargoStatus.OnHands;
 
             // Assert
             Assert.True(result);
         }
-        
+
         [Fact]
         public void TryRemoveCargoTrueTest()
         {
             // Arrange
-            Stock stck = new Stock();
+            Container cnt = new Container(5, 5);
             Cargo crg = new Cargo(0, 1, 1);
-            Loader ldr = new Loader();
+            Unloader unldr = new Unloader();
             Cargo crg2;
 
             // Act
-            stck.AddCargo(crg);
-            bool action = stck.TryRemoveCargo(out crg2);
-            ldr.Take(crg2);
+            cnt.AddCargo(crg);
+            bool action = cnt.TryRemoveCargo(out crg2);
+            unldr.Take(crg2);
 
-            bool result = action && ldr.TakedCargo.Equals(crg) && crg.Status == CargoStatus.OnHands && stck.GetCount() == 0;
+            bool result = action && unldr.TakedCargo.Equals(crg) && crg.Status == CargoStatus.OnHands && cnt.GetCount() == 0;
 
             // Assert
             Assert.True(result);
@@ -120,13 +121,13 @@ namespace Cargolator.Tests
         public void TryRemoveCargoStockIsEmptyFalseTest()
         {
             // Arrange
-            Stock stck = new Stock();
+            Container cnt = new Container(5, 5);
             Cargo crg;
-            Loader ldr = new Loader();
+            Unloader unldr = new Unloader();
 
             // Act
-            bool action1 = stck.TryRemoveCargo(out crg);
-            bool action2 = ldr.TryTake(crg);
+            bool action1 = cnt.TryRemoveCargo(out crg);
+            bool action2 = unldr.TryTake(crg);
 
             bool result = !action1 && !action2 && crg is null;
 
@@ -138,13 +139,13 @@ namespace Cargolator.Tests
         public void ContainsTest()
         {
             // Arrange
-            Stock stck = new Stock();
+            Container cnt = new Container(5, 5);
             Cargo crg = new Cargo(0, 1, 1);
 
             // Act
-            stck.AddCargo(crg);
+            cnt.AddCargo(crg);
 
-            bool result = stck.Contains(crg);
+            bool result = cnt.Contains(crg);
 
             // Assert
             Assert.True(result);

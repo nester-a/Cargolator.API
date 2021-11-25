@@ -22,6 +22,8 @@ namespace Cargolator.API.Base
 
         public void Load(ILoadable container)
         {
+            if (container is null) throw new ArgumentNullException("Container", "Container parameter is null");
+            if (TakedCargo is null) throw new NullReferenceException($"This {nameof(ThisWorkerType)} taked cargo is null");
             container.AddCargo(TakedCargo);
             LoadCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} successfully load the cargo {TakedCargo.Id} to the container.", true));
             TryDropCargo(CargoStatus.InContainer);
@@ -45,6 +47,7 @@ namespace Cargolator.API.Base
 
         public void Rotate()
         {
+            if (TakedCargo is null) throw new NullReferenceException($"This {nameof(ThisWorkerType)} taked cargo is null");
             int tmp = TakedCargo.Length;
             TakedCargo.Length = TakedCargo.Width;
             TakedCargo.Width = tmp;
@@ -64,6 +67,9 @@ namespace Cargolator.API.Base
 
         public void TakeFromStock(IStock stock)
         {
+            if (stock is null) throw new ArgumentNullException("Stock", "Stock is null");
+            if (stock.GetCount() == 0) throw new InvalidOperationException("Stock is empty");
+            if (TakedCargo is not null) throw new InvalidOperationException($"This {nameof(ThisWorkerType)} taked cargo is not null");
             Take(stock.RemoveCargo());
             TakeFromStockCargoEvent?.Invoke(this, new WorkerEventArgs($"The {nameof(ThisWorkerType)} successfully take the cargo {TakedCargo.Id} from stock.", true));
         }

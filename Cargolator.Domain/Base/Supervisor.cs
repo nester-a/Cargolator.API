@@ -14,10 +14,12 @@ namespace Cargolator.API.Base
         public Dictionary<int, ICoordinates> LoadList { get; set; } = new Dictionary<int, ICoordinates>();
         public Supervisor(ILoadable container)
         {
+            if (container is null) throw new ArgumentNullException("Container", "Container is null");
             ContainerMap = new string[container.Length, container.Width];
         }
         public Coordinates FindPlaceAndLoadOnIt(ICargo cargo)
         {
+            if (cargo is null) throw new ArgumentNullException("Cargo", "Cargo is null");
             for (int i = 0; i < ContainerMap.GetLength(0); i++)
             {
                 for (int j = 0; j < ContainerMap.GetLength(1); j++)
@@ -35,6 +37,8 @@ namespace Cargolator.API.Base
         }
         public bool CheckSquare(IPoint startPoint, ICargo cargo)
         {
+            if (startPoint is null) throw new ArgumentNullException("StartPoint", "StartPoint is null");
+            if (cargo is null) throw new ArgumentNullException("Cargo", "Cargo is null");
             for (int length = startPoint.Y; length < startPoint.Y + cargo.Length; length++)
             {
                 for (int width = startPoint.X; width < startPoint.X + cargo.Width; width++)
@@ -50,6 +54,8 @@ namespace Cargolator.API.Base
         }
         public Point FillMap(IPoint startPoint, ICargo cargo)
         {
+            if (startPoint is null) throw new ArgumentNullException("StartPoint", "StartPoint is null");
+            if (cargo is null) throw new ArgumentNullException("Cargo", "Cargo is null");
             int X = 0;
             int Y = 0;
             for (int length = startPoint.Y; length < startPoint.Y + cargo.Length; length++)
@@ -66,6 +72,7 @@ namespace Cargolator.API.Base
         }
         public bool EraseCargoFromMap(ICargo cargo)
         {
+            if (cargo is null) throw new ArgumentNullException("Cargo", "Cargo is null");
             if (LoadList.ContainsKey(cargo.Id))
             {
                 int s = cargo.Length * cargo.Width;

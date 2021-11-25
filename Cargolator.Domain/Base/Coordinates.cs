@@ -12,6 +12,8 @@ namespace Cargolator.API.Base
     {
         public Coordinates(Point2D upperLeftCorner, Point2D lowerRightCorner)
         {
+            if (upperLeftCorner is null) throw new ArgumentNullException("UpperLeftCorner", "UpperLeftCorner can not be null");
+            if (lowerRightCorner is null) throw new ArgumentNullException("LowerRightCorner", "LowerRightCorner can not be null");
             UpperLeftCorner = upperLeftCorner;
             LowerRightCorner = lowerRightCorner;
         }
