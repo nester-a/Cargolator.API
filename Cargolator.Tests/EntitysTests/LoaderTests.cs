@@ -23,7 +23,7 @@ namespace Cargolator.Tests.EntitysTests
             ldr.Take(crg);
             ldr.Load(cnt);
 
-            bool result = ldr.TakedCargo is null && cnt.LoadedCargo.Contains(crg) && crg.Status == CargoStatus.InContainer;
+            bool result = ldr.TakedCargo is null && cnt.Contains(crg) && crg.Status == CargoStatus.InContainer;
 
             // Assert
             Assert.True(result);
