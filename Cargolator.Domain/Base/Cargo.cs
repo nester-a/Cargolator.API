@@ -12,7 +12,7 @@ namespace Cargolator.API.Base
     public class Cargo : ICargo
     {
         public delegate void CargoHandler(object sender, CargoEventArgs e);
-        public static event CargoHandler CargoEvent;
+        public event CargoHandler CargoEvent;
 
         public int Id { get; set; }
 
