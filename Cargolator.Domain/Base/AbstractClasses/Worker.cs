@@ -14,6 +14,7 @@ namespace Cargolator.API.Base.AbstractClasses
         public delegate void WorkerHandler(object sender, WorkerEventArgs e);
         public event WorkerHandler TakeCargoEvent;
         public event WorkerHandler DropCargoEvent;
+
         public WorkerType ThisWorkerType { get; protected set; }
         public Cargo TakedCargo { get; private set; }
 

@@ -1,4 +1,5 @@
 ﻿using Cargolator.API.Base.Enums;
+using Cargolator.API.Base.EventArgs;
 using Cargolator.API.Base.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,8 @@ namespace Cargolator.API.Base
 {
     public class Container : ILoadable
     {
+        public delegate void ContainerHandler(object sender, ContainerEventArgs e);
+        public static event ContainerHandler ContainerEvent;
         public Stack<Cargo> LoadedCargo { get; private set; } = new Stack<Cargo>();
 
         public int Length { get; set; }
@@ -36,6 +39,7 @@ namespace Cargolator.API.Base
             {
                 AddCargo(cargos[i]);
             }
+            ContainerEvent?.Invoke(this, new ContainerEventArgs($"The cargos succesfully added in container", true));
         }
 
         public void AddCargo(Cargo cargo)
@@ -43,6 +47,7 @@ namespace Cargolator.API.Base
             if (cargo is null) throw new ArgumentNullException("cargos", "Cargos parameter is null");
             if (cargo.Status != CargoStatus.InContainer) cargo.ChangeStatus(CargoStatus.InContainer);
             LoadedCargo.Push(cargo);
+            ContainerEvent?.Invoke(this, new ContainerEventArgs($"The cargo {cargo.Id} succesfully added in container", true));
         }
 
         public void AddRangeCargo(ICollection<Cargo> cargos)
@@ -52,18 +57,25 @@ namespace Cargolator.API.Base
             {
                 AddCargo(cargo);
             }
+            ContainerEvent?.Invoke(this, new ContainerEventArgs($"The cargos succesfully added in container", true));
         }
 
         public Cargo RemoveCargo()
         {
             if (GetCount() == 0) throw new InvalidOperationException("Container is empty");
-            return LoadedCargo.Pop();
+            var poped = LoadedCargo.Pop();
+            ContainerEvent?.Invoke(this, new ContainerEventArgs($"The cargo {poped.Id} succesfully ejected from container", true));
+            return poped;
         }
 
         public bool TryRemoveCargo(out Cargo cargo)
         {
             cargo = null;
-            if (GetCount() <= 0) return false;
+            if (GetCount() <= 0)
+            {
+                ContainerEvent?.Invoke(this, new ContainerEventArgs($"Container is empty", false));
+                return false;
+            }
             cargo = RemoveCargo();
             return true;
         }
