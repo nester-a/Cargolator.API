@@ -1,4 +1,5 @@
 ﻿using Cargolator.API.Base.AbstractClasses;
+using Cargolator.API.Base.EventArgs;
 using Cargolator.API.Base.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,9 @@ namespace Cargolator.API.Base
 {
     public class Supervisor : ISupervisor
     {
+        public delegate void SupervisorHandler(object sender, SupervisorEventArgs e);
+        public event SupervisorHandler SupervisorEvent;
+
         public string[,] ContainerMap { get; set; }
         public Dictionary<int, ICoordinates> LoadList { get; set; } = new Dictionary<int, ICoordinates>();
         public Supervisor(ILoadable container)
@@ -29,11 +33,14 @@ namespace Cargolator.API.Base
                     {
                         Point startPoint = new Point(j, i);
                         Point endPoint = FillMap(startPoint, cargo);
-                        return new Coordinates(startPoint, endPoint);
+                        var result = new Coordinates(startPoint, endPoint);
+                        SupervisorEvent?.Invoke(this, new SupervisorEventArgs($"The cargo {cargo.Id} succesfully placed. {result}", true));
+                        return result;
                     }
                     else continue;
                 }
             }
+            SupervisorEvent?.Invoke(this, new SupervisorEventArgs($"The cargo {cargo.Id} cannot be placed in container", false));
             return null;
         }
 
@@ -49,9 +56,14 @@ namespace Cargolator.API.Base
                     {
                         if (ContainerMap[length, width] is not null) return false;
                     } 
-                    else return false;
+                    else
+                    {
+                        SupervisorEvent?.Invoke(this, new SupervisorEventArgs($"The cargo {cargo.Id} cannot be placed here", true));
+                        return false;
+                    }
                 }
             }
+            SupervisorEvent?.Invoke(this, new SupervisorEventArgs($"The cargo {cargo.Id} can be placed here", true));
             return true;
         }
 
@@ -71,6 +83,7 @@ namespace Cargolator.API.Base
                 }
                 Y = length;
             }
+            SupervisorEvent?.Invoke(this, new SupervisorEventArgs($"The cargo {cargo.Id} drawed on map", true));
             return new Point(X, Y);
         }
 
@@ -90,6 +103,7 @@ namespace Cargolator.API.Base
                             ContainerMap[i, j] = null;
                             if (s == 0)
                             {
+                                SupervisorEvent?.Invoke(this, new SupervisorEventArgs($"The cargo {cargo.Id} succesfully erased from map", true));
                                 LoadList.Remove(cargo.Id);
                                 return true;
                             }
@@ -97,6 +111,7 @@ namespace Cargolator.API.Base
                     }
                 }
             }
+            SupervisorEvent?.Invoke(this, new SupervisorEventArgs($"The cargo {cargo.Id} cannot be erased from map", false));
             return false;
         }
     }

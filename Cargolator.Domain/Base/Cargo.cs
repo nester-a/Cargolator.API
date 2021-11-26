@@ -1,4 +1,5 @@
 ﻿using Cargolator.API.Base.Enums;
+using Cargolator.API.Base.EventArgs;
 using Cargolator.API.Base.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,9 @@ namespace Cargolator.API.Base
 {
     public class Cargo : ICargo
     {
+        public delegate void CargoHandler(object sender, CargoEventArgs e);
+        public event CargoHandler CargoEvent;
+
         public int Id { get; set; }
 
         public int Length { get; set; }
@@ -27,6 +31,7 @@ namespace Cargolator.API.Base
             Width = width;
             Status = CargoStatus.Wait;
         }
+
         public override bool Equals(object obj)
         {
             if(obj is Cargo && obj is not null)
@@ -36,9 +41,11 @@ namespace Cargolator.API.Base
             }
             return false;
         }
+
         public void ChangeStatus(CargoStatus newStatus)
         {
             Status = newStatus;
+            CargoEvent?.Invoke(this, new CargoEventArgs($"The cargo status changed to {nameof(newStatus)}", true));
         }
     }
 }

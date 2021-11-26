@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Cargolator.API.Base.EventArgs
 {
-    public class WorkerEventArgs : BaseEventArgs
+    public class CargoEventArgs : BaseEventArgs
     {
-        public WorkerEventArgs(string message, bool eventResult) : base (message, eventResult){ }
+        public CargoEventArgs(string message, bool eventResult) : base(message, eventResult) { }
     }
 }

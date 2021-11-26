@@ -32,7 +32,7 @@ namespace Cargolator.Tests
             }
 
             // Assert
-            Assert.True(cnt.LoadedCargo.Contains(crg));
+            Assert.True(cnt.Contains(crg));
         }
 
         [Fact]
@@ -60,7 +60,7 @@ namespace Cargolator.Tests
                 sv.EraseCargoFromMap(unldr.TakedCargo);
 
             // Assert
-            Assert.True(!cnt.LoadedCargo.Contains(crg));
+            Assert.True(!cnt.Contains(crg));
         }
 
         [Fact]
@@ -135,7 +135,7 @@ namespace Cargolator.Tests
             {
                 for (int i = 0; i < 3; i++)
                 {
-                    if (!cnt.LoadedCargo.Contains(crgList[i])) return false;
+                    if (!cnt.Contains(crgList[i])) return false;
                 }
                 return true;
             }

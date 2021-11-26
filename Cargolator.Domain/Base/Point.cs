@@ -27,5 +27,9 @@ namespace Cargolator.API.Base
             }
             return false;
         }
+        public override string ToString()
+        {
+            return $"({X}; {Y})";
+        }
     }
 }

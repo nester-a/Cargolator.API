@@ -23,4 +23,8 @@
     <ProjectReference Include="..\Cargolator.Domain\Cargolator.API.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="EventsTests\" />
+  </ItemGroup>
+
 </Project>
