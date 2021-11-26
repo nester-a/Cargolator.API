@@ -26,5 +26,9 @@ namespace Cargolator.API.Base
             }
             return false;
         }
+        public override string ToString()
+        {
+            return $"Coordinates: (Upper Left Corner - {UpperLeftCorner}, Lower Right Corner - {LowerRightCorner})";
+        }
     }
 }
