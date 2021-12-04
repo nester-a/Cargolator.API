@@ -1,4 +1,5 @@
 ﻿using Cargolator.API.Base.AbstractClasses;
+using System.Collections.Generic;
 
 namespace Cargolator.Tests.EventsTests
 {
@@ -6,22 +7,23 @@ namespace Cargolator.Tests.EventsTests
     {
         internal bool testTrue { get; private set; } = false;
         internal bool testFalse { get; private set; } = false;
-        internal string mes { get; private set; } = null;
+        internal string lastMes { get; private set; } = null;
+        internal List<string> messages { get; private set; } = new List<string>();
 
         internal void Reset()
         {
             testTrue = false;
             testFalse = false;
-            mes = null;
+            lastMes = null;
         }
         internal bool CheckFalse()
         {
-            if (testFalse && mes is not null) return true;
+            if (testFalse && lastMes is not null) return true;
             return false;
         }
         internal bool CheckTrue()
         {
-            if (testTrue && mes is not null) return true;
+            if (testTrue && lastMes is not null) return true;
             return false;
         }
         internal void EventRouting(BaseEventArgs e)
@@ -30,13 +32,20 @@ namespace Cargolator.Tests.EventsTests
             if (e.EventResult == true)
             {
                 testTrue = true;
-                mes = e.Message;
+                lastMes = e.Message;
+                messages.Add(lastMes);
             }
             if (e.EventResult == false)
             {
                 testFalse = true;
-                mes = e.Message;
+                lastMes = e.Message;
+                messages.Add(lastMes);
             }
+        }
+
+        internal void ClearMessages()
+        {
+            messages.Clear();
         }
     }
 }

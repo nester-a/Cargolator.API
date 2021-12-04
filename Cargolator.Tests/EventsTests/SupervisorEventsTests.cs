@@ -1,61 +1,71 @@
 ﻿using Cargolator.API.Base;
+using Cargolator.API.Base.EventArgs;
 using Xunit;
 
-namespace Cargolator.Tests.EntitysTests
+namespace Cargolator.Tests.EventsTests
 {
-    public class SupervisorTests
+    public class SupervisorEventsTests
     {
+        EventTestHelper helper = new EventTestHelper();
+
         [Fact]
-        public void FindLoadPlaceNotNullTest()
+        public void FindLoadPlaceEventPositiveResultTest()
         {
             // Arrange
             Container cnt = new Container(10, 10);
             Supervisor sv = new Supervisor(cnt);
             Cargo crg = new Cargo(0, 5, 5);
+            sv.SupervisorEvent += Supervisor_SupervisorEvent;
 
             // Act
-            var result = sv.FindPlaceAndLoadOnIt(crg);
-            Coordinates exp = new Coordinates(new Point(0, 0), new Point(4, 4));
+            sv.FindPlaceAndLoadOnIt(crg);
+
+            bool expected = helper.CheckTrue();
 
             // Assert
-            Assert.Equal<Coordinates>(exp, result);
+            Assert.True(expected);
         }
 
         [Fact]
-        public void FindLoadPlaceNullTest()
+        public void FindLoadPlaceEventNegativeResultTest()
         {
             // Arrange
             Container cnt = new Container(10, 10);
             Supervisor sv = new Supervisor(cnt);
             Cargo crg1 = new Cargo(0, 10, 10);
             Cargo crg2 = new Cargo(0, 10, 10);
+            sv.SupervisorEvent += Supervisor_SupervisorEvent;
 
             // Act
             sv.FindPlaceAndLoadOnIt(crg1);
-            var result = sv.FindPlaceAndLoadOnIt(crg2);
+            sv.FindPlaceAndLoadOnIt(crg2);
+
+            bool expected = helper.CheckFalse();
 
             // Assert
-            Assert.True(result is null);
+            Assert.True(expected);
         }
 
         [Fact]
-        public void CheckSquareTrueTest()
+        public void CheckSquareEventPositiveResultTest()
         {
             // Arrange
             Container cnt = new Container(10, 10);
             Supervisor sv = new Supervisor(cnt);
             Cargo crg = new Cargo(0, 5, 5);
             Point p = new Point(0, 0);
+            sv.SupervisorEvent += Supervisor_SupervisorEvent;
 
             // Act
-            var result = sv.CheckSquare(p, crg);
+            sv.CheckSquare(p, crg);
+            bool expected = helper.CheckTrue();
 
             // Assert
-            Assert.True(result);
+            Assert.True(expected);
         }
 
         [Fact]
-        public void CheckSquareFalseTest()
+        public void CheckSquareEventNegativeResultTest()
         {
             // Arrange
             Container cnt = new Container(10, 10);
@@ -63,80 +73,97 @@ namespace Cargolator.Tests.EntitysTests
             Cargo crg1 = new Cargo(0, 5, 5);
             Cargo crg2 = new Cargo(1, 3, 5);
             Point p = new Point(0, 0);
+            sv.SupervisorEvent += Supervisor_SupervisorEvent;
 
             // Act
             sv.FindPlaceAndLoadOnIt(crg1);
-            var result = sv.CheckSquare(p, crg2);
+            sv.CheckSquare(p, crg2);
+
+            bool expected = helper.CheckFalse();
 
             // Assert
-            Assert.True(!result);
+            Assert.True(expected);
         }
 
         [Fact]
-        public void FillMapNotNullTest()
+        public void FillMapEventPositiveResultTest()
         {
             // Arrange
             Container cnt = new Container(10, 10);
             Supervisor sv = new Supervisor(cnt);
             Cargo crg1 = new Cargo(0, 5, 5);
             Point start = new Point(0, 0);
-            Point expected = new Point(4, 4);
+            Point expected = new Point(4, 4); 
+            sv.SupervisorEvent += Supervisor_SupervisorEvent;
 
             // Act
-            var result = sv.FillMap(start, crg1);
+            sv.FillMap(start, crg1);
+
+            bool exp = helper.CheckTrue();
 
             // Assert
-            Assert.Equal<Point>(expected, result);
+            Assert.True(exp);
         }
 
         [Fact]
-        public void FillMapNullTest()
+        public void FillMapEventNegativeResultTest()
         {
             // Arrange
             Container cnt = new Container(4, 4);
             Supervisor sv = new Supervisor(cnt);
             Cargo crg1 = new Cargo(0, 5, 5);
             Point start = new Point(0, 0);
+            sv.SupervisorEvent += Supervisor_SupervisorEvent;
 
             // Act
-            var end = sv.FillMap(start, crg1);
+            sv.FillMap(start, crg1);
 
-            bool result = end is null;
+            bool expected = helper.CheckFalse();
 
             // Assert
-            Assert.True(result);
+            Assert.True(expected);
         }
 
         [Fact]
-        public void EraseCargoFromMapTrueTest()
+        public void EraseCargoFromMapEventPositiveResultTest()
         {
             // Arrange
             Container cnt = new Container(6, 6);
             Supervisor sv = new Supervisor(cnt);
             Cargo crg1 = new Cargo(0, 5, 5);
+            sv.SupervisorEvent += Supervisor_SupervisorEvent;
 
             // Act
             var coor = sv.FindPlaceAndLoadOnIt(crg1);
             sv.LoadList.Add(crg1.Id, coor);
-            var result = sv.EraseCargoFromMap(crg1);
+            sv.EraseCargoFromMap(crg1);
+
+            bool expected = helper.CheckTrue();
 
             // Assert
-            Assert.True(result);
+            Assert.True(expected);
         }
 
         [Fact]
-        public void EraseCargoFromMapFalse()
+        public void EraseCargoFromMapEventNegativeResultTest()
         {
             // Arrange
             Container cnt = new Container(6, 6);
             Supervisor sv = new Supervisor(cnt);
             Cargo crg1 = new Cargo(0, 5, 5);
+            sv.SupervisorEvent += Supervisor_SupervisorEvent;
 
             // Act
-            var result = sv.EraseCargoFromMap(crg1);
+            sv.EraseCargoFromMap(crg1);
+            bool expected = helper.CheckFalse();
 
             // Assert
-            Assert.True(!result);
+            Assert.True(expected);
+        }
+
+        private void Supervisor_SupervisorEvent(object sender, SupervisorEventArgs e)
+        {
+            helper.EventRouting(e);
         }
     }
 }

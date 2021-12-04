@@ -1,11 +1,7 @@
-﻿using Cargolator.API.Base.AbstractClasses;
-using Cargolator.API.Base.EventArgs;
+﻿using Cargolator.API.Base.EventArgs;
 using Cargolator.API.Base.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cargolator.API.Base
 {
@@ -54,11 +50,15 @@ namespace Cargolator.API.Base
                 {
                     if (length < ContainerMap.GetLength(0) && width < ContainerMap.GetLength(1))
                     {
-                        if (ContainerMap[length, width] is not null) return false;
+                        if (ContainerMap[length, width] is not null)
+                        {
+                            SupervisorEvent?.Invoke(this, new SupervisorEventArgs($"The cargo {cargo.Id} cannot be placed here", false));
+                            return false;
+                        }
                     } 
                     else
                     {
-                        SupervisorEvent?.Invoke(this, new SupervisorEventArgs($"The cargo {cargo.Id} cannot be placed here", true));
+                        SupervisorEvent?.Invoke(this, new SupervisorEventArgs($"The cargo {cargo.Id} cannot be placed here", false));
                         return false;
                     }
                 }
@@ -77,7 +77,11 @@ namespace Cargolator.API.Base
             {
                 for (int width = startPoint.X; width < startPoint.X + cargo.Width; width++)
                 {
-                    if (length >= ContainerMap.GetLength(0) || width >= ContainerMap.GetLength(1)) return null;
+                    if (length >= ContainerMap.GetLength(0) || width >= ContainerMap.GetLength(1))
+                    {
+                        SupervisorEvent?.Invoke(this, new SupervisorEventArgs($"The cargo {cargo.Id} cannot be drawed on map", false));
+                        return null;
+                    }
                     ContainerMap[length, width] = cargo.Id.ToString();
                     X = width;
                 }
