@@ -44,8 +44,14 @@ namespace Cargolator.API.Base
 
         public void ChangeStatus(CargoStatus newStatus)
         {
+            if(newStatus == Status)
+            {
+                CargoEvent?.Invoke(this, new CargoEventArgs($"The cargo status already this", false));
+                return;
+            }
+            CargoStatus oldStatus = Status;
             Status = newStatus;
-            CargoEvent?.Invoke(this, new CargoEventArgs($"The cargo status changed to {nameof(newStatus)}", true));
+            CargoEvent?.Invoke(this, new CargoEventArgs($"The cargo status changed from {nameof(oldStatus)} to {nameof(newStatus)}", true));
         }
     }
 }
