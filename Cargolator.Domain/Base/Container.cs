@@ -12,7 +12,7 @@ namespace Cargolator.API.Base
     public class Container : ILoadable
     {
         public delegate void ContainerHandler(object sender, ContainerEventArgs e);
-        public static event ContainerHandler ContainerEvent;
+        public event ContainerHandler ContainerEvent;
         public Stack<Cargo> LoadedCargo { get; private set; } = new Stack<Cargo>();
 
         public int Length { get; set; }
