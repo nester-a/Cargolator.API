@@ -1,11 +1,5 @@
 ﻿using Cargolator.API.Base;
-using Cargolator.API.Base.Enums;
 using Cargolator.API.Base.EventArgs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Cargolator.Tests.EventsTests
